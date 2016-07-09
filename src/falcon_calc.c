@@ -24,7 +24,28 @@ roman *strtoroman(char *str) {
 }
 
 void parse_numeral(char numeral, roman *r) {
-    if (numeral == 'I') {
-        r->I++;
+    switch(numeral)
+    {
+        case 'I':
+            r->I++;
+            break;
+        case 'V':
+            r->V++;
+            break;
+        case 'X':
+            r->X++;
+            break;
+        case 'L':
+            r->L++;
+            break;
+        case 'C':
+            r->C++;
+            break;
+        case 'D':
+            r->D++;
+            break;
+        case 'M':
+            r->M++;
+            break;
     }
 }

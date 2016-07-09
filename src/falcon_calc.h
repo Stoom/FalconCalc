@@ -7,6 +7,12 @@
 
 typedef struct {
     unsigned int I : 4;
+    unsigned int V : 1;
+    unsigned int X : 4;
+    unsigned int L : 1;
+    unsigned int C : 4;
+    unsigned int D : 1;
+    unsigned int M : 4;
 } roman;
 
 roman *strtoroman(char *str);

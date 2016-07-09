@@ -42,6 +42,44 @@ START_TEST (test_strtoroman__converts_string_II_to_romain_numeral_2)
         free(actual);
     }
 END_TEST
+START_TEST (test_strtoroman__converts_string_V_to_romain_numeral_5)
+    {
+        char str[] = "V";
+        roman *expected = malloc(sizeof(roman));
+        roman *actual;
+        bzero(expected, sizeof(roman));
+
+        expected->V = 1;
+        actual = strtoroman(str);
+
+        ck_assert_not_null(actual);
+        ck_assert_roman_eq(expected, actual);
+
+        free(expected);
+        free(actual);
+    }
+END_TEST
+START_TEST (test_strtoroman__converts_string_MDCLX_to_romain_numeral_1660)
+    {
+        char str[] = "MDCLX";
+        roman *expected = malloc(sizeof(roman));
+        roman *actual;
+        bzero(expected, sizeof(roman));
+
+        expected->X = 1;
+        expected->L = 1;
+        expected->C = 1;
+        expected->D = 1;
+        expected->M = 1;
+        actual = strtoroman(str);
+
+        ck_assert_not_null(actual);
+        ck_assert_roman_eq(expected, actual);
+
+        free(expected);
+        free(actual);
+    }
+END_TEST
 
 Suite *test_calculator_suite(void) {
     Suite *suite = suite_create("FalconCalc");
@@ -49,6 +87,8 @@ Suite *test_calculator_suite(void) {
 
     tcase_add_test(tc_core, test_strtoroman__converts_string_I_to_romain_numeral_1);
     tcase_add_test(tc_core, test_strtoroman__converts_string_II_to_romain_numeral_2);
+    tcase_add_test(tc_core, test_strtoroman__converts_string_V_to_romain_numeral_5);
+    tcase_add_test(tc_core, test_strtoroman__converts_string_MDCLX_to_romain_numeral_1660);
     suite_add_tcase(suite, tc_core);
 
     return suite;

@@ -11,9 +11,8 @@
 START_TEST (test_strtoroman__converts_string_I_to_romain_numeral_1)
     {
         char str[] = "I";
-        roman *expected = malloc(sizeof(roman));
+        roman *expected = calloc(1, sizeof(roman));
         roman *actual;
-        bzero(expected, sizeof(roman));
 
         expected->I = 1;
         actual = strtoroman(str);
@@ -28,9 +27,8 @@ END_TEST
 START_TEST (test_strtoroman__converts_string_II_to_romain_numeral_2)
     {
         char str[] = "II";
-        roman *expected = malloc(sizeof(roman));
+        roman *expected = calloc(1, sizeof(roman));
         roman *actual;
-        bzero(expected, sizeof(roman));
 
         expected->I = 2;
         actual = strtoroman(str);
@@ -45,9 +43,8 @@ END_TEST
 START_TEST (test_strtoroman__converts_string_V_to_romain_numeral_5)
     {
         char str[] = "V";
-        roman *expected = malloc(sizeof(roman));
+        roman *expected = calloc(1, sizeof(roman));
         roman *actual;
-        bzero(expected, sizeof(roman));
 
         expected->V = 1;
         actual = strtoroman(str);
@@ -62,9 +59,8 @@ END_TEST
 START_TEST (test_strtoroman__converts_string_MDCLX_to_romain_numeral_1660)
     {
         char str[] = "MDCLX";
-        roman *expected = malloc(sizeof(roman));
+        roman *expected = calloc(1, sizeof(roman));
         roman *actual;
-        bzero(expected, sizeof(roman));
 
         expected->X = 1;
         expected->L = 1;
@@ -83,9 +79,8 @@ END_TEST
 START_TEST (test_strtoroman__converts_string_IV_to_romain_numeral_4)
     {
         char str[] = "IV";
-        roman *expected = malloc(sizeof(roman));
+        roman *expected = calloc(1, sizeof(roman));
         roman *actual;
-        bzero(expected, sizeof(roman));
 
         expected->I = 4;
         actual = strtoroman(str);

@@ -12,7 +12,6 @@ int parse_numeral_lookahead(char, char, roman *);
 
 roman *strtoroman(char *str) {
     roman *r = calloc(1, sizeof(roman));
-    bzero(r, sizeof(roman));
 
     int length = strlen(str);
     for (int i = 0; i < length; i++) {

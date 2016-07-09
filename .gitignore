@@ -5,3 +5,12 @@ Makefile
 cmake_install.cmake
 install_manifest.txt
 CTestTestfile.cmake
+
+# IDEs
+/.idea
+
+# Outputs
+/Testing
+**/FalconCalc
+**/TestFalconCalc
+*.a

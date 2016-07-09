@@ -8,44 +8,49 @@
 
 #include "falcon_calc.h"
 
-void parse_numeral(char, roman *);
+int parse_numeral_lookahead(char, char, roman *);
 
 roman *strtoroman(char *str) {
     roman *r = calloc(1, sizeof(roman));
     bzero(r, sizeof(roman));
 
     int length = strlen(str);
-    for (int i = 0; i < length - 1; i++) {
-        parse_numeral(str[i], r);
+    for (int i = 0; i < length; i++) {
+        i += parse_numeral_lookahead(str[i], str[i+1], r);
     }
-    parse_numeral(str[length - 1], r);
 
     return r;
 }
 
-void parse_numeral(char numeral, roman *r) {
-    switch(numeral)
-    {
-        case 'I':
-            r->I++;
-            break;
-        case 'V':
-            r->V++;
-            break;
-        case 'X':
-            r->X++;
-            break;
-        case 'L':
-            r->L++;
-            break;
-        case 'C':
-            r->C++;
-            break;
-        case 'D':
-            r->D++;
-            break;
-        case 'M':
-            r->M++;
-            break;
+int parse_numeral_lookahead(char numeral, char lookahead, roman *r) {
+    if (numeral == 'I' && lookahead == 'V') {
+        r->I += 4;
     }
+    else {
+        switch (numeral) {
+            case 'I':
+                r->I++;
+                break;
+            case 'V':
+                r->V++;
+                break;
+            case 'X':
+                r->X++;
+                break;
+            case 'L':
+                r->L++;
+                break;
+            case 'C':
+                r->C++;
+                break;
+            case 'D':
+                r->D++;
+                break;
+            case 'M':
+                r->M++;
+                break;
+        }
+        return 0;
+    }
+    return 1;
 }

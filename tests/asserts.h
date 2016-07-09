@@ -13,7 +13,7 @@
 #define _ck_assert_roman(X, OP, Y) do { \
   roman *_ck_x = (X); \
   roman *_ck_y = (Y); \
-  ck_assert_msg(_ck_x->I OP _ck_y->I, "Assertion '%s' failed: %s == %ju, %s == %ju", #X" "#OP" "#Y, #X, _ck_x, #Y, _ck_y); \
+  ck_assert_msg(_ck_x->I OP _ck_y->I, "Assertion '%s' failed: %s == 0x%x, %s == 0x%x", #X" "#OP" "#Y, #X, *_ck_x, #Y, *_ck_y); \
 } while (0)
 
 #define ck_assert_roman_eq(X, Y) _ck_assert_roman(X, ==, Y)

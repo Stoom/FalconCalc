@@ -15,6 +15,9 @@ roman *strtoroman(char *str) {
     bzero(r, sizeof(roman));
 
     int length = strlen(str);
+    for (int i = 0; i < length - 1; i++) {
+        parse_numeral(str[i], r);
+    }
     parse_numeral(str[length - 1], r);
 
     return r;

@@ -25,12 +25,30 @@ START_TEST (test_strtoroman__converts_string_I_to_romain_numeral_1)
         free(actual);
     }
 END_TEST
+START_TEST (test_strtoroman__converts_string_II_to_romain_numeral_2)
+    {
+        char str[] = "II";
+        roman *expected = malloc(sizeof(roman));
+        roman *actual;
+        bzero(expected, sizeof(roman));
+
+        expected->I = 2;
+        actual = strtoroman(str);
+
+        ck_assert_not_null(actual);
+        ck_assert_roman_eq(expected, actual);
+
+        free(expected);
+        free(actual);
+    }
+END_TEST
 
 Suite *test_calculator_suite(void) {
     Suite *suite = suite_create("FalconCalc");
     TCase *tc_core = tcase_create("Core");
 
     tcase_add_test(tc_core, test_strtoroman__converts_string_I_to_romain_numeral_1);
+    tcase_add_test(tc_core, test_strtoroman__converts_string_II_to_romain_numeral_2);
     suite_add_tcase(suite, tc_core);
 
     return suite;

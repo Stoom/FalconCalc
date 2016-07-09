@@ -5,8 +5,7 @@
 #ifndef FALCON_CALC_H
 #define FALCON_CALC_H
 
-typedef struct
-{
+typedef struct {
     unsigned int I : 4;
 } roman;
 

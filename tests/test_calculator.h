@@ -26,8 +26,7 @@ START_TEST (test_strtoroman__converts_string_I_to_romain_numeral_1)
     }
 END_TEST
 
-Suite *test_calculator_suite(void)
-{
+Suite *test_calculator_suite(void) {
     Suite *suite = suite_create("FalconCalc");
     TCase *tc_core = tcase_create("Core");
 

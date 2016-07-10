@@ -15,6 +15,8 @@ int parse_numeral_lookahead(char, char, roman *);
 roman *strtoroman(char *str) {
     roman *r = calloc(1, sizeof(roman));
 
+    //TODO: Look into safer string ops, this method is banking on the fact that there is a null terminated string.
+    //TODO: 25 characters looks to be a valid range, but need to check expanded numerals.
     int length = strlen(str);
     for (int i = 0; i < length; i++) {
         i += parse_numeral_lookahead(str[i], str[i + 1], r);

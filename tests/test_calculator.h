@@ -14,7 +14,7 @@ START_TEST (test_strtoroman__converts_string_I_to_romain_numeral_1)
         roman *expected = calloc(1, sizeof(roman));
         roman *actual;
 
-        expected->I = 1;
+        expected->I = 0b0001;
         actual = strtoroman(str);
 
         ck_assert_not_null(actual);
@@ -30,7 +30,7 @@ START_TEST (test_strtoroman__converts_string_II_to_romain_numeral_2)
         roman *expected = calloc(1, sizeof(roman));
         roman *actual;
 
-        expected->I = 2;
+        expected->I = 0b0010;
         actual = strtoroman(str);
 
         ck_assert_not_null(actual);
@@ -46,7 +46,7 @@ START_TEST (test_strtoroman__converts_string_V_to_romain_numeral_5)
         roman *expected = calloc(1, sizeof(roman));
         roman *actual;
 
-        expected->V = 1;
+        expected->V = 0b1;
         actual = strtoroman(str);
 
         ck_assert_not_null(actual);
@@ -62,11 +62,11 @@ START_TEST (test_strtoroman__converts_string_MDCLX_to_romain_numeral_1660)
         roman *expected = calloc(1, sizeof(roman));
         roman *actual;
 
-        expected->X = 1;
-        expected->L = 1;
-        expected->C = 1;
-        expected->D = 1;
-        expected->M = 1;
+        expected->X = 0b0001;
+        expected->L = 0b1;
+        expected->C = 0b0001;
+        expected->D = 0b1;
+        expected->M = 0b0001;
         actual = strtoroman(str);
 
         ck_assert_not_null(actual);
@@ -82,7 +82,60 @@ START_TEST (test_strtoroman__converts_string_IV_to_romain_numeral_4)
         roman *expected = calloc(1, sizeof(roman));
         roman *actual;
 
-        expected->I = 4;
+        expected->I = 0b1000;
+        actual = strtoroman(str);
+
+        ck_assert_not_null(actual);
+        ck_assert_roman_eq(expected, actual);
+
+        free(expected);
+        free(actual);
+    }
+END_TEST
+START_TEST (test_strtoroman__converts_string_IX_to_romain_numeral_9)
+    {
+        char str[] = "IX";
+        roman *expected = calloc(1, sizeof(roman));
+        roman *actual;
+
+        expected->I = 0b1000;
+        expected->V = 0b1;
+        actual = strtoroman(str);
+
+        ck_assert_not_null(actual);
+        ck_assert_roman_eq(expected, actual);
+
+        free(expected);
+        free(actual);
+    }
+END_TEST
+START_TEST (test_strtoroman__converts_string_CDXL_to_romain_numeral_440)
+    {
+        char str[] = "CDXL";
+        roman *expected = calloc(1, sizeof(roman));
+        roman *actual;
+
+        expected->X = 0b1000;
+        expected->C = 0b1000;
+        actual = strtoroman(str);
+
+        ck_assert_not_null(actual);
+        ck_assert_roman_eq(expected, actual);
+
+        free(expected);
+        free(actual);
+    }
+END_TEST
+START_TEST (test_strtoroman__converts_string_CMXC_to_romain_numeral_990)
+    {
+        char str[] = "CMXC";
+        roman *expected = calloc(1, sizeof(roman));
+        roman *actual;
+
+        expected->V = 0b1;
+        expected->X = 0b1000;
+        expected->D = 0b1;
+        expected->C = 0b1000;
         actual = strtoroman(str);
 
         ck_assert_not_null(actual);
@@ -102,6 +155,9 @@ Suite *test_calculator_suite(void) {
     tcase_add_test(tc_core, test_strtoroman__converts_string_V_to_romain_numeral_5);
     tcase_add_test(tc_core, test_strtoroman__converts_string_MDCLX_to_romain_numeral_1660);
     tcase_add_test(tc_core, test_strtoroman__converts_string_IV_to_romain_numeral_4);
+    tcase_add_test(tc_core, test_strtoroman__converts_string_IX_to_romain_numeral_9);
+    tcase_add_test(tc_core, test_strtoroman__converts_string_CDXL_to_romain_numeral_440);
+    tcase_add_test(tc_core, test_strtoroman__converts_string_CMXC_to_romain_numeral_990);
     suite_add_tcase(suite, tc_core);
 
     return suite;

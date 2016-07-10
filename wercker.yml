@@ -27,4 +27,4 @@ build:
           name: run tests
           code: |
               cd $WERCKER_SOURCE_DIR
-              ctest --output-on-failure .
+              tests/TestFalconCalc

@@ -30,7 +30,7 @@ START_TEST (test_ator__converts_string_II_to_romain_numeral_2)
         roman *expected = calloc(1, sizeof(roman));
         roman *actual;
 
-        expected->I = 0b0010;
+        expected->I = 0b0011;
         actual = ator(str);
 
         ck_assert_not_null(actual);
@@ -82,7 +82,7 @@ START_TEST (test_ator__converts_string_IV_to_romain_numeral_4)
         roman *expected = calloc(1, sizeof(roman));
         roman *actual;
 
-        expected->I = 0b1000;
+        expected->I = 0b1111;
         actual = ator(str);
 
         ck_assert_not_null(actual);
@@ -98,7 +98,7 @@ START_TEST (test_ator__converts_string_IX_to_romain_numeral_9)
         roman *expected = calloc(1, sizeof(roman));
         roman *actual;
 
-        expected->I = 0b1000;
+        expected->I = 0b1111;
         expected->V = 0b1;
         actual = ator(str);
 
@@ -115,8 +115,8 @@ START_TEST (test_ator__converts_string_CDXL_to_romain_numeral_440)
         roman *expected = calloc(1, sizeof(roman));
         roman *actual;
 
-        expected->X = 0b1000;
-        expected->C = 0b1000;
+        expected->X = 0b1111;
+        expected->C = 0b1111;
         actual = ator(str);
 
         ck_assert_not_null(actual);
@@ -133,9 +133,9 @@ START_TEST (test_ator__converts_string_CMXC_to_romain_numeral_990)
         roman *actual;
 
         expected->V = 0b1;
-        expected->X = 0b1000;
+        expected->X = 0b1111;
         expected->D = 0b1;
-        expected->C = 0b1000;
+        expected->C = 0b1111;
         actual = ator(str);
 
         ck_assert_not_null(actual);

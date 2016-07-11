@@ -43,24 +43,24 @@ roman *add(roman *left, roman *right) {
 
 int parse_numeral_lookahead(char numeral, char lookahead, roman *r) {
     if (numeral == 'I' && lookahead == 'V') {
-        r->I = 0b1000;
+        r->I = 0b1111;
     }
     else if (numeral == 'I' && lookahead == 'X') {
-        r->I = 0b1000;
+        r->I = 0b1111;
         r->V = 0b1;
     }
     else if (numeral == 'X' && lookahead == 'L') {
-        r->X = 0b1000;
+        r->X = 0b1111;
     }
     else if (numeral == 'X' && lookahead == 'C') {
-        r->X = 0b1000;
+        r->X = 0b1111;
         r->V = 0b1;
     }
     else if (numeral == 'C' && lookahead == 'D') {
-        r->C = 0b1000;
+        r->C = 0b1111;
     }
     else if (numeral == 'C' && lookahead == 'M') {
-        r->C = 0b1000;
+        r->C = 0b1111;
         r->D = 0b1;
     }
     else {
@@ -74,28 +74,28 @@ int parse_numeral(char numeral, roman *r) {
     switch (numeral) {
         case 'I':
             r->I <<= 1;
-            if (r->I == 0) r->I++;
+            r->I++;
             break;
         case 'V':
             r->V++;
             break;
         case 'X':
             r->X <<= 1;
-            if (r->X == 0) r->X++;
+            r->X++;
             break;
         case 'L':
             r->L++;
             break;
         case 'C':
             r->C <<= 1;
-            if (r->C == 0) r->C++;
+            r->C++;
             break;
         case 'D':
             r->D++;
             break;
         case 'M':
             r->M <<= 1;
-            if (r->M == 0) r->M++;
+            r->M++;
             break;
     }
     return 0;

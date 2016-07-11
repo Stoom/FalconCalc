@@ -33,9 +33,10 @@ roman *ator(char *str) {
 
 roman *add(roman *left, roman *right) {
     roman_convert _left, _right;
-    roman_convert *sum = calloc(1, sizeof(roman_convert));
+    roman_convert *sum = malloc(sizeof(roman_convert));
     _left.original = *left;
     _right.original = *right;
+    sum->merged = 0;
 
     sum->merged = _left.merged | _right.merged;
 
@@ -44,31 +45,31 @@ roman *add(roman *left, roman *right) {
 
 roman *subtract(roman *left, roman *right) {
     roman_convert _left, _right;
-    roman_convert *diff = calloc(1, sizeof(roman_convert));
-    roman_convert *diff_l = calloc(1, sizeof(roman_convert));
-    roman_convert *diff_r = calloc(1, sizeof(roman_convert));
+    roman_convert *diff = malloc(sizeof(roman_convert));
+    roman_convert diff_l, diff_r;
 
     _left.original = *left;
     _right.original = *right;
+    diff->merged = 0;
 
     diff->merged = _left.merged ^ _right.merged;
     shift_numeral(&diff->original);
 
-    diff_l->merged = _left.merged & diff->merged;
-    diff_r->merged = _right.merged & diff->merged;
-    shift_numeral(&diff_l->original);
-    shift_numeral(&diff_r->original);
+    diff_l.merged = _left.merged & diff->merged;
+    diff_r.merged = _right.merged & diff->merged;
+    shift_numeral(&diff_l.original);
+    shift_numeral(&diff_r.original);
 
     int borrowed = 0;
-    if (diff_r->original.I > diff_l->original.I) {
-        diff_l->original.V = 0b0;
-        diff_l->original.I = 0b1111;
-        diff_r->original.I >>= 1;
+    if (diff_r.original.I > diff_l.original.I) {
+        diff_l.original.V = 0b0;
+        diff_l.original.I = 0b1111;
+        diff_r.original.I >>= 1;
 
         borrowed++;
     }
     if (borrowed == 1) {
-        diff->merged = diff_l->merged ^ diff_r->merged;
+        diff->merged = diff_l.merged ^ diff_r.merged;
         shift_numeral(&diff->original);
     }
 

@@ -17,5 +17,6 @@ typedef struct {
 
 roman *ator(char *str);
 roman *add(roman *left, roman *right);
+roman *subtract(roman *left, roman *right);
 
 #endif //FALCON_CALC_H

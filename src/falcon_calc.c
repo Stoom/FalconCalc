@@ -41,6 +41,17 @@ roman *add(roman *left, roman *right) {
     return &sum->original;
 }
 
+roman *subtract(roman *left, roman *right) {
+    roman_convert _left, _right;
+    roman_convert *difference = calloc(1, sizeof(roman_convert));
+    _left.original = *left;
+    _right.original = *right;
+
+    difference->merged = _left.merged ^ _right.merged;
+
+    return &difference->original;
+}
+
 int parse_numeral_lookahead(char numeral, char lookahead, roman *r) {
     if (numeral == 'I' && lookahead == 'V') {
         r->I = 0b1111;

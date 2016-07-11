@@ -36,7 +36,7 @@ roman *add(roman *left, roman *right) {
     _left.original = *left;
     _right.original = *right;
 
-    sum->merged = _left.merged ^ _right.merged;
+    sum->merged = _left.merged | _right.merged;
 
     return &sum->original;
 }
@@ -96,6 +96,9 @@ int parse_numeral(char numeral, roman *r) {
         case 'M':
             r->M <<= 1;
             r->M++;
+            break;
+        case 'N':
+            memset(r, 0, sizeof(roman));
             break;
     }
     return 0;

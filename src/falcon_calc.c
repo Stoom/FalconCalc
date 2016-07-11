@@ -15,6 +15,7 @@ typedef union {
 
 int parse_numeral(char, roman *);
 int parse_numeral_lookahead(char, char, roman *);
+void shift_numeral(roman *);
 
 
 roman *ator(char *str) {
@@ -48,6 +49,7 @@ roman *subtract(roman *left, roman *right) {
     _right.original = *right;
 
     difference->merged = _left.merged ^ _right.merged;
+    shift_numeral(&difference->original);
 
     return &difference->original;
 }
@@ -114,3 +116,10 @@ int parse_numeral(char numeral, roman *r) {
     }
     return 0;
 }
+
+void shift_numeral(roman *r) {
+    while (r->I > 0 && (r->I & 0x1) != 1) {
+        r->I >>= 1;
+    }
+}
+

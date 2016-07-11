@@ -118,6 +118,15 @@ int parse_numeral(char numeral, roman *r) {
 }
 
 void shift_numeral(roman *r) {
+    while (r->M > 0 && (r->M & 0x1) != 1) {
+        r->M >>= 1;
+    }
+    while (r->C > 0 && (r->C & 0x1) != 1) {
+        r->C >>= 1;
+    }
+    while (r->X > 0 && (r->X & 0x1) != 1) {
+        r->X >>= 1;
+    }
     while (r->I > 0 && (r->I & 0x1) != 1) {
         r->I >>= 1;
     }

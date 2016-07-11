@@ -8,8 +8,12 @@
 
 #include "falcon_calc.h"
 
-int parse_numeral(char, roman *);
+typedef union {
+    roman original;
+    unsigned int merged;
+} roman_convert;
 
+int parse_numeral(char, roman *);
 int parse_numeral_lookahead(char, char, roman *);
 
 
@@ -18,12 +22,23 @@ roman *ator(char *str) {
 
     //TODO: Look into safer string ops, this method is banking on the fact that there is a null terminated string.
     //TODO: 25 characters looks to be a valid range, but need to check expanded numerals.
-    int length = strlen(str);
+    size_t length = strlen(str);
     for (int i = 0; i < length; i++) {
         i += parse_numeral_lookahead(str[i], str[i + 1], r);
     }
 
     return r;
+}
+
+roman *add(roman *left, roman *right) {
+    roman_convert _left, _right;
+    roman_convert *sum = calloc(1, sizeof(roman_convert));
+    _left.original = *left;
+    _right.original = *right;
+
+    sum->merged = _left.merged ^ _right.merged;
+
+    return &sum->original;
 }
 
 int parse_numeral_lookahead(char numeral, char lookahead, roman *r) {

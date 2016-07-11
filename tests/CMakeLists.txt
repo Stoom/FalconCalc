@@ -9,7 +9,7 @@ set(PROJECT_LIBS lib_falcon)
 include_directories(. ../src)
 
 set(TEST_SOURCE test_main.c)
-set(TEST_CASES test_calculator.h)
+set(TEST_CASES test_convert.h)
 set(TEST_HEADERS asserts.h)
 add_executable(TestFalconCalc ${TEST_SOURCE} ${TEST_CASES} ${TEST_HEADERS})
 target_link_libraries(TestFalconCalc ${PROJECT_LIBS} ${LIBS})

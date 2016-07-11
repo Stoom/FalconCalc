@@ -12,7 +12,8 @@ int parse_numeral(char, roman *);
 
 int parse_numeral_lookahead(char, char, roman *);
 
-roman *strtoroman(char *str) {
+
+roman *ator(char *str) {
     roman *r = calloc(1, sizeof(roman));
 
     //TODO: Look into safer string ops, this method is banking on the fact that there is a null terminated string.

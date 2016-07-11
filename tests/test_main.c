@@ -5,15 +5,15 @@
 #include <check.h>
 #include <stdlib.h>
 
-#include "test_calculator.h"
+#include "test_convert.h"
 
 int main(int argc, char *argv[])
 {
     int number_failed;
     SRunner *runner;
 
-    Suite *calc_suite = test_calculator_suite();
-    runner = srunner_create(calc_suite);
+    Suite *convert_suite = test_convert_suite();
+    runner = srunner_create(convert_suite);
 
     srunner_run_all(runner, CK_NORMAL);
     number_failed = srunner_ntests_failed(runner);

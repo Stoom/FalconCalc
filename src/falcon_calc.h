@@ -15,6 +15,6 @@ typedef struct {
     unsigned int M : 4;
 } roman;
 
-roman *strtoroman(char *str);
+roman *ator(char *str);
 
 #endif //FALCON_CALC_H

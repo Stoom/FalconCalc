@@ -11,12 +11,17 @@
 
 
 #define _ck_assert_roman(cX, OP, cY) do { \
+  ck_assert_not_null(cX); \
+  ck_assert_not_null(cY); \
+  \
   roman *_ck_x = (cX); \
   roman *_ck_y = (cY); \
   char _ck_x_b[38]; \
   char _ck_y_b[38]; \
+  \
   _itoa(_ck_x->I + (_ck_x->V << 4) + (_ck_x->X << 5) + (_ck_x->L << 9) + (_ck_x->C << 10) + (_ck_x->D << 14) + (_ck_x->M << 15), _ck_x_b); \
   _itoa(_ck_y->I + (_ck_y->V << 4) + (_ck_y->X << 5) + (_ck_y->L << 9) + (_ck_y->C << 10) + (_ck_y->D << 14) + (_ck_y->M << 15), _ck_y_b); \
+  \
   ck_assert_msg(_ck_x->M OP _ck_y->M, "Assertion '%s' failed: %s == %s, %s == %s", #cX" "#OP" "#cY, #cX, _ck_x_b, #cY, _ck_y_b); \
   ck_assert_msg(_ck_x->D OP _ck_y->D, "Assertion '%s' failed: %s == %s, %s == %s", #cX" "#OP" "#cY, #cX, _ck_x_b, #cY, _ck_y_b); \
   ck_assert_msg(_ck_x->C OP _ck_y->C, "Assertion '%s' failed: %s == %s, %s == %s", #cX" "#OP" "#cY, #cX, _ck_x_b, #cY, _ck_y_b); \

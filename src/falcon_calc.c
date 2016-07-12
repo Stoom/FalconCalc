@@ -109,28 +109,28 @@ int parse_numeral(char numeral, roman *r) {
     switch (numeral) {
         case 'I':
             r->I <<= 1;
-            r->I++;
+            r->I |= 1;
             break;
         case 'V':
             r->V++;
             break;
         case 'X':
             r->X <<= 1;
-            r->X++;
+            r->X |= 1;
             break;
         case 'L':
             r->L++;
             break;
         case 'C':
             r->C <<= 1;
-            r->C++;
+            r->C |= 1;
             break;
         case 'D':
             r->D++;
             break;
         case 'M':
             r->M <<= 1;
-            r->M++;
+            r->M |= 1;
             break;
         case 'N':
             memset(r, 0, sizeof(roman));

@@ -62,16 +62,17 @@ roman *subtract(roman *left, roman *right) {
     diff->merged = 0;
 
     diff->merged = _left.merged ^ _right.merged;
-    shift_numeral(&diff->original);
-
     diff_l.merged = _left.merged & diff->merged;
     diff_r.merged = _right.merged & diff->merged;
+
+    shift_numeral(&diff->original);
     shift_numeral(&diff_l.original);
     shift_numeral(&diff_r.original);
 
     unsigned int mask = 0x0;
-    for (int current = mask_len; current > 0; current--) {
-        if ((diff_r.merged & mask_numerals[current]) > (diff_l.merged & mask_numerals[current])) {
+    for (int current = mask_len - 1; current > 0; current--) {
+        unsigned int current_mask = mask_numerals[current];
+        if ((diff_r.merged & current_mask) > (diff_l.merged & current_mask)) {
             mask = borrow(current, &diff_l, &diff_r);
             diff_l.merged |= mask;
             diff_r.merged &= (diff_r.merged & mask_numerals[current]) >> 1 | mask_inv_numerals[current];

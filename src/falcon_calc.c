@@ -12,11 +12,20 @@ typedef union {
     roman original;
     unsigned int merged;
 } roman_convert;
+unsigned int mask_numerals[] = {0b01111000000000000000, 0b00000100000000000000,
+                                0b00000011110000000000, 0b00000000001000000000,
+                                0b00000000000111100000, 0b00000000000000010000,
+                                0b00000000000000001111};
+unsigned int mask_inv_numerals[] = {0b10000111111111111111, 0b11111011111111111111,
+                                    0b11111100001111111111, 0b11111111110111111111,
+                                    0b11111111111000011111, 0b11111111111111101111,
+                                    0b11111111111111110000};
+int mask_len = 7;
 
+unsigned int borrow(int , roman_convert *, roman_convert *);
 int parse_numeral(char, roman *);
 int parse_numeral_lookahead(char, char, roman *);
 void shift_numeral(roman *);
-
 
 roman *ator(char *str) {
     roman *r = calloc(1, sizeof(roman));
@@ -60,20 +69,34 @@ roman *subtract(roman *left, roman *right) {
     shift_numeral(&diff_l.original);
     shift_numeral(&diff_r.original);
 
-    int borrowed = 0;
-    if (diff_r.original.I > diff_l.original.I) {
-        diff_l.original.V = 0b0;
-        diff_l.original.I = 0b1111;
-        diff_r.original.I >>= 1;
-
-        borrowed++;
+    unsigned int mask = 0x0;
+    for (int current = mask_len; current > 0; current--) {
+        if ((diff_r.merged & mask_numerals[current]) > (diff_l.merged & mask_numerals[current])) {
+            mask = borrow(current, &diff_l, &diff_r);
+            diff_l.merged |= mask;
+            diff_r.merged &= (diff_r.merged & mask_numerals[current]) >> 1 | mask_inv_numerals[current];
+        }
     }
-    if (borrowed == 1) {
+    if (mask > 0x0) {
         diff->merged = diff_l.merged ^ diff_r.merged;
         shift_numeral(&diff->original);
     }
 
     return &diff->original;
+}
+
+unsigned int borrow(int current, roman_convert *left, roman_convert *right) {
+    int next = current - 1;
+    unsigned int next_numeral = left->merged & mask_numerals[next];
+    unsigned int current_mask = mask_numerals[current];
+    if (next_numeral > 0) {
+        next_numeral >>= 1;
+        left->merged &= next_numeral | mask_inv_numerals[next];
+        return current_mask;
+    }
+    else {
+        return borrow(next, left, right) | current_mask;
+    }
 }
 
 int parse_numeral_lookahead(char numeral, char lookahead, roman *r) {

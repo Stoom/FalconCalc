@@ -83,6 +83,20 @@ START_TEST (test_subtract__borrows_for_I_from_V)
         free_romans(left, right, expected, actual);
     }
 END_TEST
+START_TEST (test_subtract__borrows_for_I_from_X)
+    {
+        roman *left = ator("X");
+        roman *right = ator("I");
+
+        roman *expected = ator("VIV");
+        roman *actual;
+
+        actual = subtract(left, right);
+
+        ck_assert_roman_eq(expected, actual);
+        free_romans(left, right, expected, actual);
+    }
+END_TEST
 
 Suite *test_calculator_suite(void) {
     Suite *suite = suite_create("Calculator");
@@ -93,6 +107,7 @@ Suite *test_calculator_suite(void) {
     tcase_add_test(tc_core, test_subtract__I_from_II_numerals);
     tcase_add_test(tc_core, test_subtract__duplicate_numerals);
     tcase_add_test(tc_core, test_subtract__borrows_for_I_from_V);
+    tcase_add_test(tc_core, test_subtract__borrows_for_I_from_X);
     suite_add_tcase(suite, tc_core);
 
     return suite;

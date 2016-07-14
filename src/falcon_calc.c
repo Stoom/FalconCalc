@@ -53,8 +53,13 @@ roman *add(roman *left, roman *right) {
         sum_l.merged = _left.merged & current_mask;
         sum_r.merged = _right.merged & current_mask;
         while (sum_r.merged > 0) {
+            unsigned int next_mask = mask_numerals[current - 1];
+            unsigned int comp_mask = next_mask | current_mask;
             sum_r.merged &= (sum_r.merged >> 1) & current_mask;
-            sum_l.merged = (((sum_l.merged | ~current_mask) << 1) | 1) & current_mask;
+            sum_l.merged = ((sum_l.merged | ~comp_mask) << 1 | 1) & comp_mask;
+            if ((sum_l.merged & next_mask) > 0) {
+                sum_l.merged &= ~current_mask;
+            }
         };
         sum->merged |= sum_l.merged;
     }

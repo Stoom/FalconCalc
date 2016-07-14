@@ -22,7 +22,7 @@ unsigned int mask_inv_numerals[] = {0b10000111111111111111, 0b111110111111111111
                                     0b11111111111111110000};
 int mask_len = 7;
 
-unsigned int borrow(int , roman_convert *, roman_convert *);
+unsigned int borrow(int, roman_convert *, roman_convert *);
 int parse_numeral(char, roman *);
 int parse_numeral_lookahead(char, char, roman *);
 void shift_numeral(roman *);
@@ -43,11 +43,21 @@ roman *ator(char *str) {
 roman *add(roman *left, roman *right) {
     roman_convert _left, _right;
     roman_convert *sum = malloc(sizeof(roman_convert));
+    roman_convert sum_l, sum_r;
     _left.original = *left;
     _right.original = *right;
     sum->merged = 0;
 
-    sum->merged = _left.merged | _right.merged;
+    for (int current = mask_len - 1; current >= 0; current--) {
+        unsigned int current_mask = mask_numerals[current];
+        sum_l.merged = _left.merged & current_mask;
+        sum_r.merged = _right.merged & current_mask;
+        while (sum_r.merged > 0) {
+            sum_r.merged &= (sum_r.merged >> 1) & current_mask;
+            sum_l.merged = (((sum_l.merged | ~current_mask) << 1) | 1) & current_mask;
+        };
+        sum->merged |= sum_l.merged;
+    }
 
     return &sum->original;
 }

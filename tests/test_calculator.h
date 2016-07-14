@@ -26,6 +26,20 @@ START_TEST (test_add__distinct_numerals)
         free_romans(left, right, expected, actual);
     }
 END_TEST
+START_TEST (test_add__same_numeral)
+    {
+        roman *left = ator("I");
+        roman *right = ator("I");
+
+        roman *expected = ator("II");
+        roman *actual;
+
+        actual = add(left, right);
+
+        ck_assert_roman_eq(expected, actual);
+        free_romans(left, right, expected, actual);
+    }
+END_TEST
 
 START_TEST (test_subtract__I_from_I_numerals)
     {
@@ -117,6 +131,7 @@ Suite *test_calculator_suite(void) {
     TCase *tc_core = tcase_create("Core");
 
     tcase_add_test(tc_core, test_add__distinct_numerals);
+    tcase_add_test(tc_core, test_add__same_numeral);
     tcase_add_test(tc_core, test_subtract__I_from_I_numerals);
     tcase_add_test(tc_core, test_subtract__I_from_II_numerals);
     tcase_add_test(tc_core, test_subtract__duplicate_numerals);

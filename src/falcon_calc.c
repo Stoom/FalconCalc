@@ -41,33 +41,48 @@ roman *ator(char *str) {
 }
 
 roman *add(roman *left, roman *right) {
-    roman_convert _left, _right;
+    roman_convert _right;
     roman_convert *sum = malloc(sizeof(roman_convert));
-    roman_convert sum_l, sum_r;
-    _left.original = *left;
+    unsigned int sum_l, sum_r, carry;
+    sum->original = *left;
     _right.original = *right;
-    sum->merged = 0;
+    carry = 0;
 
     for (int current = mask_len - 1; current >= 0; current--) {
+        int next = current - 1;
+
         unsigned int current_mask = mask_numerals[current];
-        int carry = 0;
-        sum_l.merged = _left.merged & current_mask;
-        sum_r.merged = _right.merged & current_mask;
-        while (sum_r.merged > 0) {
-            unsigned int next_mask = mask_numerals[current - 1];
-            unsigned int comp_mask = (!carry)
-                                     ? next_mask | current_mask
-                                     : current_mask;
+        unsigned int comp_mask = (current)
+                                 ? mask_numerals[next] | current_mask
+                                 : current_mask;
 
-            sum_r.merged &= (sum_r.merged >> 1) & current_mask;
-            sum_l.merged |= ((sum_l.merged | ~comp_mask) << 1 | 1) & comp_mask;
+        sum_l = sum->merged & current_mask;
+        sum_r = _right.merged & current_mask;
 
-            if (carry == 0 && (sum_l.merged & next_mask) > 0) {
-                sum_l.merged &= ~current_mask;
-                carry = 1;
+        while ((carry & current_mask) > 0) {
+            unsigned int before = sum_l;
+
+            carry &= (carry >> 1) & current_mask;
+            sum_l |= ((sum_l | ~comp_mask) << 1 | 1) & comp_mask;
+
+            if (before == (sum_l & current_mask)) {
+                sum_l &= ~current_mask;
+                carry = sum_l;
             }
-        };
-        sum->merged |= sum_l.merged;
+        }
+        while (sum_r > 0) {
+            unsigned int before = sum_l;
+
+            sum_r &= (sum_r >> 1) & current_mask;
+            sum_l |= ((sum_l | ~comp_mask) << 1 | 1) & comp_mask;
+
+            if (before == (sum_l & current_mask)) {
+                sum_l &= ~current_mask;
+                carry = sum_l;
+            }
+        }
+
+        sum->merged = (sum->merged & ~current_mask) | (sum_l & current_mask);
     }
 
     return &sum->original;

@@ -9,7 +9,8 @@
 #include "falcon_calc.h"
 
 typedef struct {
-    unsigned int remainder :15;
+    unsigned int remainder :14;
+    unsigned int D: 1;
     unsigned int M: 4;
 } roman_reduced;
 
@@ -42,15 +43,17 @@ roman *ator(char *str) {
     return r;
 }
 
-char * rtoa(roman *numeral){
+char *rtoa(roman *numeral) {
     char *reduced = calloc(longest_numeral, sizeof(char));
     roman_convert _numeral;
     _numeral.original = *numeral;
 
-    while (_numeral.reduced.M)
-    {
+    while (_numeral.reduced.M) {
         _numeral.reduced.M >>= 1;
         strncat(reduced, "M", longest_numeral);
+    }
+    if (_numeral.reduced.D) {
+        strncat(reduced, "D", longest_numeral);
     }
 
     return reduced;

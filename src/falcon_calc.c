@@ -8,8 +8,14 @@
 
 #include "falcon_calc.h"
 
+typedef struct {
+    unsigned int remainder :15;
+    unsigned int M: 4;
+} roman_reduced;
+
 typedef union {
     roman original;
+    roman_reduced reduced;
     unsigned int merged;
 } roman_convert;
 unsigned int mask_numerals[] = {0b01111000000000000000, 0b00000100000000000000,
@@ -34,6 +40,20 @@ roman *ator(char *str) {
     }
 
     return r;
+}
+
+char * rtoa(roman *numeral){
+    char *reduced = calloc(longest_numeral, sizeof(char));
+    roman_convert _numeral;
+    _numeral.original = *numeral;
+
+    while (_numeral.reduced.M)
+    {
+        _numeral.reduced.M >>= 1;
+        strncat(reduced, "M", longest_numeral);
+    }
+
+    return reduced;
 }
 
 roman *add(roman *left, roman *right) {

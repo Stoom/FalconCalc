@@ -16,6 +16,7 @@ typedef struct {
 } roman;
 
 roman *ator(char *str);
+char *rtoa(roman *numeral);
 roman *add(roman *left, roman *right);
 roman *subtract(roman *left, roman *right);
 

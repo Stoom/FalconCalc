@@ -184,6 +184,21 @@ START_TEST (test_ator__protects_against_buffer_overflow)
     }
 END_TEST
 
+START_TEST (test_rtoa__converts_M)
+    {
+        roman *r = ator("M");
+        char expected[] = "M";
+
+        char *actual = rtoa(r);
+
+        ck_assert_not_null(actual);
+        ck_assert_str_eq(expected, actual);
+
+        free(r);
+        free(actual);
+    }
+END_TEST
+
 Suite *test_convert_suite(void) {
     Suite *suite = suite_create("Convert");
     TCase *tc_core = tcase_create("Core");
@@ -198,6 +213,8 @@ Suite *test_convert_suite(void) {
     tcase_add_test(tc_core, test_ator__converts_string_CMXC_to_romain_numeral_990);
     tcase_add_test(tc_core, test_ator__converts_string_N_to_romain_numeral_nulla);
     tcase_add_test(tc_core, test_ator__protects_against_buffer_overflow);
+
+    tcase_add_test(tc_core, test_rtoa__converts_M);
     suite_add_tcase(suite, tc_core);
 
     return suite;

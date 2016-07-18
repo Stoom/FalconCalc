@@ -198,6 +198,20 @@ START_TEST (test_rtoa__converts_M)
         free(actual);
     }
 END_TEST
+START_TEST (test_rtoa__converts_MM)
+    {
+        roman *r = ator("MM");
+        char expected[] = "MM";
+
+        char *actual = rtoa(r);
+
+        ck_assert_not_null(actual);
+        ck_assert_str_eq(expected, actual);
+
+        free(r);
+        free(actual);
+    }
+END_TEST
 
 Suite *test_convert_suite(void) {
     Suite *suite = suite_create("Convert");
@@ -215,6 +229,7 @@ Suite *test_convert_suite(void) {
     tcase_add_test(tc_core, test_ator__protects_against_buffer_overflow);
 
     tcase_add_test(tc_core, test_rtoa__converts_M);
+    tcase_add_test(tc_core, test_rtoa__converts_MM);
     suite_add_tcase(suite, tc_core);
 
     return suite;

@@ -9,7 +9,8 @@
 #include "falcon_calc.h"
 
 typedef struct {
-    unsigned int remainder :14;
+    unsigned int remainder :10;
+    unsigned int C: 4;
     unsigned int D: 1;
     unsigned int M: 4;
 } roman_reduced;
@@ -54,6 +55,10 @@ char *rtoa(roman *numeral) {
     }
     if (_numeral.reduced.D) {
         strncat(reduced, "D", longest_numeral);
+    }
+    while (_numeral.reduced.C) {
+        _numeral.reduced.C >>= 1;
+        strncat(reduced, "C", longest_numeral);
     }
 
     return reduced;

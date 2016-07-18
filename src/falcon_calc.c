@@ -5,20 +5,12 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "falcon_calc.h"
 
-typedef struct {
-    unsigned int remainder :10;
-    unsigned int C: 3;
-    unsigned int CD: 1;
-    unsigned int D: 1;
-    unsigned int M: 4;
-} roman_reduced;
-
 typedef union {
     roman original;
-    roman_reduced reduced;
     unsigned int merged;
 } roman_convert;
 unsigned int mask_numerals[] = {0b01111000000000000000, 0b00000100000000000000,
@@ -26,8 +18,16 @@ unsigned int mask_numerals[] = {0b01111000000000000000, 0b00000100000000000000,
                                 0b00000000000111100000, 0b00000000000000010000,
                                 0b00000000000000001111};
 int mask_len = 7;
+
+unsigned int mask_reduced[] = {0b01111000000000000000,
+                               0b00000110000000000000, 0b00000100000000000000,
+                               0b00000010000000000000, 0b00000001110000000000};
+char *reduced_numeral[] = {"M", "CM", "D", "CD", "C"};
+int mask_reduced_len = 5;
+
 size_t longest_numeral = 20;
 
+void reduce_plus(char *, char *, unsigned int *, unsigned int, unsigned int, bool);
 void shift_add(unsigned int *, unsigned int *, unsigned int *, unsigned int, unsigned int);
 unsigned int borrow(int, roman_convert *, roman_convert *);
 int parse_numeral(char, roman *);
@@ -50,23 +50,41 @@ char *rtoa(roman *numeral) {
     roman_convert _numeral;
     _numeral.original = *numeral;
 
-    while (_numeral.reduced.M) {
-        _numeral.reduced.M >>= 1;
-        strncat(reduced, "M", longest_numeral);
-    }
-    if (_numeral.reduced.D) {
-        strncat(reduced, "D", longest_numeral);
-    }
-    if (_numeral.reduced.CD) {
-        _numeral.reduced.C = 0b000;
-        strncat(reduced, "CD", longest_numeral);
-    }
-    while (_numeral.reduced.C) {
-        _numeral.reduced.C >>= 1;
-        strncat(reduced, "C", longest_numeral);
+    for (int current = 0; current < mask_reduced_len; current = current + 4) {
+        unsigned int current_mask = mask_reduced[current];
+        unsigned int nines_mask = 0x0;
+        unsigned int fives_mask = 0x0;
+        unsigned int fours_mask = 0x0;
+        unsigned int ones_mask = 0x0;
+        if (current < mask_reduced_len - 4) {
+            nines_mask = mask_reduced[current + 1];
+            fives_mask = mask_reduced[current + 2];
+            fours_mask = mask_reduced[current + 3];
+            ones_mask =  mask_reduced[current + 4];
+        }
+
+        unsigned int current_numeral = _numeral.merged & current_mask;
+
+        while (current_numeral & current_mask) {
+            current_numeral >>= 1;
+            strncat(reduced, reduced_numeral[current], longest_numeral);
+        }
+
+        reduce_plus(reduced, reduced_numeral[current + 1], &_numeral.merged, nines_mask, ones_mask, true);
+        reduce_plus(reduced, reduced_numeral[current + 2], &_numeral.merged, fives_mask, ones_mask, false);
+        reduce_plus(reduced, reduced_numeral[current + 3], &_numeral.merged, fours_mask, ones_mask, true);
     }
 
     return reduced;
+}
+
+void reduce_plus(char *str, char *numeral, unsigned int *n, unsigned int n_mask, unsigned int o_mask, bool wipe_ones) {
+    if (n_mask > 0 && (*n & n_mask) == n_mask) {
+        if (wipe_ones) {
+            *n &= (~n_mask & ~o_mask);
+        }
+        strncat(str, numeral, longest_numeral);
+    }
 }
 
 roman *add(roman *left, roman *right) {

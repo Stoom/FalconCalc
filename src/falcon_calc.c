@@ -1,6 +1,7 @@
 //
 // Created by James Stumme on 7/8/16.
 //
+#define _POSIX_C_SOURCE 200809L
 
 #include <stddef.h>
 #include <string.h>
@@ -60,7 +61,7 @@ char *rtoa(roman *numeral) {
             nines_mask = mask_reduced[current + 1];
             fives_mask = mask_reduced[current + 2];
             fours_mask = mask_reduced[current + 3];
-            ones_mask =  mask_reduced[current + 4];
+            ones_mask = mask_reduced[current + 4];
         }
 
         unsigned int current_numeral = _numeral.merged & current_mask;

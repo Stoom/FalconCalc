@@ -16,10 +16,6 @@ unsigned int mask_numerals[] = {0b01111000000000000000, 0b00000100000000000000,
                                 0b00000011110000000000, 0b00000000001000000000,
                                 0b00000000000111100000, 0b00000000000000010000,
                                 0b00000000000000001111};
-unsigned int mask_inv_numerals[] = {0b10000111111111111111, 0b11111011111111111111,
-                                    0b11111100001111111111, 0b11111111110111111111,
-                                    0b11111111111000011111, 0b11111111111111101111,
-                                    0b11111111111111110000};
 int mask_len = 7;
 
 void shift_add(unsigned int *, unsigned int *, unsigned int *, unsigned int, unsigned int);
@@ -106,7 +102,7 @@ roman *subtract(roman *left, roman *right) {
         if ((diff_r.merged & current_mask) > (diff_l.merged & current_mask)) {
             mask = borrow(current, &diff_l, &diff_r);
             diff_l.merged |= mask;
-            diff_r.merged &= (diff_r.merged & mask_numerals[current]) >> 1 | mask_inv_numerals[current];
+            diff_r.merged &= (diff_r.merged & mask_numerals[current]) >> 1 | ~mask_numerals[current];
         }
     }
     if (mask > 0x0) {
@@ -123,7 +119,7 @@ unsigned int borrow(int current, roman_convert *left, roman_convert *right) {
     unsigned int current_mask = mask_numerals[current];
     if (next_numeral > 0) {
         next_numeral >>= 1;
-        left->merged &= next_numeral | mask_inv_numerals[next];
+        left->merged &= next_numeral | ~mask_numerals[next];
         return current_mask;
     }
     else {

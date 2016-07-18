@@ -82,6 +82,20 @@ START_TEST (test_add__CMXCIX_and_I)
         free_romans(left, right, expected, actual);
     }
 END_TEST
+START_TEST (test_add__M_and_M)
+    {
+        roman *left = ator("M");
+        roman *right = ator("M");
+
+        roman *expected = ator("MM");
+        roman *actual;
+
+        actual = add(left, right);
+
+        ck_assert_roman_eq(expected, actual);
+        free_romans(left, right, expected, actual);
+    }
+END_TEST
 
 START_TEST (test_subtract__I_from_I_numerals)
     {
@@ -177,6 +191,7 @@ Suite *test_calculator_suite(void) {
     tcase_add_test(tc_core, test_add__II_and_III);
     tcase_add_test(tc_core, test_add__IV_and_II);
     tcase_add_test(tc_core, test_add__CMXCIX_and_I);
+    tcase_add_test(tc_core, test_add__M_and_M);
     tcase_add_test(tc_core, test_subtract__I_from_I_numerals);
     tcase_add_test(tc_core, test_subtract__I_from_II_numerals);
     tcase_add_test(tc_core, test_subtract__duplicate_numerals);

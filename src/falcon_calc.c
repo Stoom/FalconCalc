@@ -22,6 +22,7 @@ unsigned int mask_inv_numerals[] = {0b10000111111111111111, 0b111110111111111111
                                     0b11111111111111110000};
 int mask_len = 7;
 
+void shift_add(unsigned int *, unsigned int *, unsigned int *, unsigned int, unsigned int);
 unsigned int borrow(int, roman_convert *, roman_convert *);
 int parse_numeral(char, roman *);
 int parse_numeral_lookahead(char, char, roman *);
@@ -59,33 +60,27 @@ roman *add(roman *left, roman *right) {
         sum_l = sum->merged & current_mask;
         sum_r = _right.merged & current_mask;
 
-        while ((carry & current_mask) > 0) {
-            unsigned int before = sum_l;
-
-            carry &= (carry >> 1) & current_mask;
-            sum_l |= ((sum_l | ~comp_mask) << 1 | 1) & comp_mask;
-
-            if (before == (sum_l & current_mask)) {
-                sum_l &= ~current_mask;
-                carry = sum_l;
-            }
-        }
-        while (sum_r > 0) {
-            unsigned int before = sum_l;
-
-            sum_r &= (sum_r >> 1) & current_mask;
-            sum_l |= ((sum_l | ~comp_mask) << 1 | 1) & comp_mask;
-
-            if (before == (sum_l & current_mask)) {
-                sum_l &= ~current_mask;
-                carry = sum_l;
-            }
-        }
+        shift_add(&sum_l, &carry, &carry, current_mask, comp_mask);
+        shift_add(&sum_l, &sum_r, &carry, current_mask, comp_mask);
 
         sum->merged = (sum->merged & ~current_mask) | (sum_l & current_mask);
     }
 
     return &sum->original;
+}
+
+void shift_add(unsigned int *x, unsigned int *y, unsigned int *c, unsigned int cur_mask, unsigned int comp_mask) {
+    while ((*y & cur_mask) > 0) {
+        unsigned int before = *x;
+
+        *y &= (*y >> 1) & cur_mask;
+        *x |= ((*x | ~comp_mask) << 1 | 1) & comp_mask;
+
+        if (before == (*x & cur_mask)) {
+            *x &= ~cur_mask;
+            *c = *x;
+        }
+    }
 }
 
 roman *subtract(roman *left, roman *right) {

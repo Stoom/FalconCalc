@@ -134,7 +134,7 @@ int parse_numeral_lookahead(char numeral, char lookahead, roman *r) {
     }
     else if (numeral == 'X' && lookahead == 'C') {
         r->X = 0b1111;
-        r->V = 0b1;
+        r->L = 0b1;
     }
     else if (numeral == 'C' && lookahead == 'D') {
         r->C = 0b1111;

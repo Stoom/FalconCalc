@@ -132,10 +132,10 @@ START_TEST (test_ator__converts_string_CMXC_to_romain_numeral_990)
         roman *expected = calloc(1, sizeof(roman));
         roman *actual;
 
-        expected->V = 0b1;
         expected->X = 0b1111;
-        expected->D = 0b1;
+        expected->L = 0b1;
         expected->C = 0b1111;
+        expected->D = 0b1;
         actual = ator(str);
 
         ck_assert_not_null(actual);

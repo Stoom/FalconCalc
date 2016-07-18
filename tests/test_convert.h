@@ -160,6 +160,29 @@ START_TEST (test_ator__converts_string_N_to_romain_numeral_nulla)
         free(actual);
     }
 END_TEST
+START_TEST (test_ator__protects_against_buffer_overflow)
+    {
+        char *str = malloc(sizeof(char) * 19);
+        char attack[] = {'M', (char) 0x90, (char) 0x90, (char) 0x90, (char) 0x90, (char) 0x90, (char) 0x90,
+                         (char) 0x90, (char) 0x90, (char) 0x90, (char) 0x90, (char) 0x90, (char) 0x90,
+                         (char) 0x90, (char) 0x90, (char) 0x90, (char) 0x90, (char) 0x90, (char) 0x90,
+                         (char) 0x90, 'I'};
+        memcpy(str, attack, sizeof(char) * strlen(attack));
+
+        roman *expected = calloc(1, sizeof(roman));
+        roman *actual;
+
+        expected->M = 0b001;
+
+        actual = ator(str);
+
+        ck_assert_not_null(actual);
+        ck_assert_roman_eq(expected, actual);
+
+        free(expected);
+        free(actual);
+    }
+END_TEST
 
 Suite *test_convert_suite(void) {
     Suite *suite = suite_create("Convert");
@@ -174,6 +197,7 @@ Suite *test_convert_suite(void) {
     tcase_add_test(tc_core, test_ator__converts_string_CDXL_to_romain_numeral_440);
     tcase_add_test(tc_core, test_ator__converts_string_CMXC_to_romain_numeral_990);
     tcase_add_test(tc_core, test_ator__converts_string_N_to_romain_numeral_nulla);
+    tcase_add_test(tc_core, test_ator__protects_against_buffer_overflow);
     suite_add_tcase(suite, tc_core);
 
     return suite;

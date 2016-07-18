@@ -17,6 +17,7 @@ unsigned int mask_numerals[] = {0b01111000000000000000, 0b00000100000000000000,
                                 0b00000000000111100000, 0b00000000000000010000,
                                 0b00000000000000001111};
 int mask_len = 7;
+size_t longest_numeral = 20;
 
 void shift_add(unsigned int *, unsigned int *, unsigned int *, unsigned int, unsigned int);
 unsigned int borrow(int, roman_convert *, roman_convert *);
@@ -27,9 +28,7 @@ void shift_numeral(roman *);
 roman *ator(char *str) {
     roman *r = calloc(1, sizeof(roman));
 
-    //TODO: Look into safer string ops, this method is banking on the fact that there is a null terminated string.
-    //TODO: 25 characters looks to be a valid range, but need to check expanded numerals.
-    size_t length = strlen(str);
+    size_t length = strnlen(str, longest_numeral);
     for (int i = 0; i < length; i++) {
         i += parse_numeral_lookahead(str[i], str[i + 1], r);
     }

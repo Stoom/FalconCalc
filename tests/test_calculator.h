@@ -181,6 +181,22 @@ START_TEST (test_subtract__borrows_for_CXXI_from_MCXII)
         free_romans(left, right, expected, actual);
     }
 END_TEST
+START_TEST (test_subtract__larger_from_smaller_fails)
+    {
+        roman *left = ator("I");
+        roman *right = ator("II");
+
+        roman *actual;
+
+        actual = subtract(left, right);
+
+        ck_assert_null(actual);
+
+        free(left);
+        free(right);
+        free(actual);
+    }
+END_TEST
 
 Suite *test_calculator_suite(void) {
     Suite *suite = suite_create("Calculator");
@@ -192,12 +208,14 @@ Suite *test_calculator_suite(void) {
     tcase_add_test(tc_core, test_add__IV_and_II);
     tcase_add_test(tc_core, test_add__CMXCIX_and_I);
     tcase_add_test(tc_core, test_add__M_and_M);
+
     tcase_add_test(tc_core, test_subtract__I_from_I_numerals);
     tcase_add_test(tc_core, test_subtract__I_from_II_numerals);
     tcase_add_test(tc_core, test_subtract__duplicate_numerals);
     tcase_add_test(tc_core, test_subtract__borrows_for_I_from_V);
     tcase_add_test(tc_core, test_subtract__borrows_for_I_from_X);
     tcase_add_test(tc_core, test_subtract__borrows_for_CXXI_from_MCXII);
+    tcase_add_test(tc_core, test_subtract__larger_from_smaller_fails);
     suite_add_tcase(suite, tc_core);
 
     return suite;

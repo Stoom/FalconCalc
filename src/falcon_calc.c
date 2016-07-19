@@ -147,6 +147,10 @@ roman *subtract(roman *left, roman *right) {
     _right.original = *right;
     diff->merged = 0;
 
+    if (_right.merged > _left.merged) {
+        return NULL;
+    }
+
     diff->merged = _left.merged ^ _right.merged;
     diff_l.merged = _left.merged & diff->merged;
     diff_r.merged = _right.merged & diff->merged;

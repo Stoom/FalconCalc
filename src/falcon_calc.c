@@ -31,7 +31,7 @@ unsigned int mask_reduced[] = {0b01111000000000000000,
 char *reduced_numeral[] = {"M",
                            "CM", "D", "CD", "C",
                            "XC", "L", "XL", "X",
-                           "IX", "V", "VI", "I"};
+                           "IX", "V", "IV", "I"};
 int mask_reduced_len = 13;
 
 size_t longest_numeral = 20;

@@ -310,6 +310,34 @@ START_TEST (test_rtoa__converts_CDXLIV)
         free(actual);
     }
 END_TEST
+START_TEST (test_rtoa__converts_CXI)
+    {
+        roman *r = ator("CXI");
+        char expected[] = "CXI";
+
+        char *actual = rtoa(r);
+
+        ck_assert_not_null(actual);
+        ck_assert_str_eq(expected, actual);
+
+        free(r);
+        free(actual);
+    }
+END_TEST
+START_TEST (test_rtoa__converts_LV)
+    {
+        roman *r = ator("LV");
+        char expected[] = "LV";
+
+        char *actual = rtoa(r);
+
+        ck_assert_not_null(actual);
+        ck_assert_str_eq(expected, actual);
+
+        free(r);
+        free(actual);
+    }
+END_TEST
 
 Suite *test_convert_suite(void) {
     Suite *suite = suite_create("Convert");
@@ -335,6 +363,8 @@ Suite *test_convert_suite(void) {
     tcase_add_test(tc_core, test_rtoa__converts_CM);
     tcase_add_test(tc_core, test_rtoa__converts_MMMMCMXCIX);
     tcase_add_test(tc_core, test_rtoa__converts_CDXLIV);
+    tcase_add_test(tc_core, test_rtoa__converts_CXI);
+    tcase_add_test(tc_core, test_rtoa__converts_LV);
     suite_add_tcase(suite, tc_core);
 
     return suite;

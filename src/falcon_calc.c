@@ -10,6 +10,8 @@
 
 #include "falcon_calc.h"
 
+#define MAX_NUMERAL_LENGTH 19
+
 typedef union {
     roman original;
     unsigned int merged;
@@ -34,8 +36,6 @@ char *reduced_numeral[] = {"M",
                            "IX", "V", "IV", "I"};
 int mask_reduced_len = 13;
 
-size_t longest_numeral = 20;
-
 void reduce_plus(char *, char *, unsigned int *, unsigned int, unsigned int, bool);
 void shift_add(unsigned int *, unsigned int *, unsigned int *, unsigned int, unsigned int);
 unsigned int borrow(int, roman_convert *, roman_convert *);
@@ -46,16 +46,24 @@ void shift_numeral(roman *);
 roman *ator(char *str) {
     roman *r = calloc(1, sizeof(roman));
 
-    size_t length = strnlen(str, longest_numeral);
+    size_t length = strnlen(str, MAX_NUMERAL_LENGTH);
     for (int i = 0; i < length; i++) {
-        i += parse_numeral_lookahead(str[i], str[i + 1], r);
+        int ii = parse_numeral_lookahead(str[i], str[i + 1], r);
+
+        if (ii < 0) {
+            free(r);
+            r = NULL;
+            break;
+        }
+
+        i += ii;
     }
 
     return r;
 }
 
 char *rtoa(roman *numeral) {
-    char *reduced = calloc(longest_numeral, sizeof(char));
+    char *reduced = calloc(MAX_NUMERAL_LENGTH, sizeof(char));
     roman_convert _numeral;
     _numeral.original = *numeral;
 
@@ -76,7 +84,7 @@ char *rtoa(roman *numeral) {
 
         while (current_numeral & current_mask) {
             current_numeral >>= 1;
-            strncat(reduced, reduced_numeral[current], longest_numeral);
+            strncat(reduced, reduced_numeral[current], MAX_NUMERAL_LENGTH);
         }
 
         reduce_plus(reduced, reduced_numeral[current + 1], &_numeral.merged, nines_mask, ones_mask, true);
@@ -92,7 +100,7 @@ void reduce_plus(char *str, char *numeral, unsigned int *n, unsigned int n_mask,
         if (wipe_ones) {
             *n &= (~n_mask & ~o_mask);
         }
-        strncat(str, numeral, longest_numeral);
+        strncat(str, numeral, MAX_NUMERAL_LENGTH);
     }
 }
 
@@ -213,8 +221,7 @@ int parse_numeral_lookahead(char numeral, char lookahead, roman *r) {
         r->D = 0b1;
     }
     else {
-        parse_numeral(numeral, r);
-        return 0;
+        return parse_numeral(numeral, r);
     }
     return 1;
 }
@@ -249,6 +256,8 @@ int parse_numeral(char numeral, roman *r) {
         case 'N':
             memset(r, 0, sizeof(roman));
             break;
+        default:
+            return -1;
     }
     return 0;
 }

@@ -163,16 +163,22 @@ END_TEST
 START_TEST (test_ator__protects_against_buffer_overflow)
     {
         char *str = malloc(sizeof(char) * 19);
-        char attack[] = {'M', (char) 0x90, (char) 0x90, (char) 0x90, (char) 0x90, (char) 0x90, (char) 0x90,
-                         (char) 0x90, (char) 0x90, (char) 0x90, (char) 0x90, (char) 0x90, (char) 0x90,
-                         (char) 0x90, (char) 0x90, (char) 0x90, (char) 0x90, (char) 0x90, (char) 0x90,
-                         (char) 0x90, 'I'};
+        char attack[] = {'M', 'M', 'M', 'M', 'D',
+                         'C', 'C', 'C', 'C', 'L',
+                         'X', 'X', 'X', 'X', 'V',
+                         'I', 'I', 'I', 'I', (char) 0x90, (char) 0x90, (char) 0x90, (char) 0x90, 'I'};
         memcpy(str, attack, sizeof(char) * strlen(attack));
 
         roman *expected = calloc(1, sizeof(roman));
         roman *actual;
 
-        expected->M = 0b001;
+        expected->M = 0b1111;
+        expected->D = 0b1;
+        expected->C = 0b1111;
+        expected->L = 0b1;
+        expected->X = 0b1111;
+        expected->V = 0b1;
+        expected->I = 0b1111;
 
         actual = ator(str);
 
@@ -180,6 +186,18 @@ START_TEST (test_ator__protects_against_buffer_overflow)
         ck_assert_roman_eq(expected, actual);
 
         free(expected);
+        free(actual);
+    }
+END_TEST
+START_TEST (test_ator__converting_invalid_character_fails)
+    {
+        char str[] = "FOOBAR";
+        roman *actual;
+
+        actual = ator(str);
+
+        ck_assert_null(actual);
+
         free(actual);
     }
 END_TEST
@@ -353,6 +371,7 @@ Suite *test_convert_suite(void) {
     tcase_add_test(tc_core, test_ator__converts_string_CMXC_to_romain_numeral_990);
     tcase_add_test(tc_core, test_ator__converts_string_N_to_romain_numeral_nulla);
     tcase_add_test(tc_core, test_ator__protects_against_buffer_overflow);
+    tcase_add_test(tc_core, test_ator__converting_invalid_character_fails);
 
     tcase_add_test(tc_core, test_rtoa__converts_M);
     tcase_add_test(tc_core, test_rtoa__converts_MM);

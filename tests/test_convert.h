@@ -201,6 +201,17 @@ START_TEST (test_ator__converting_invalid_character_fails)
         free(actual);
     }
 END_TEST
+START_TEST (test_ator__ignores_null)
+    {
+        roman *actual;
+
+        actual = ator(NULL);
+
+        ck_assert_null(actual);
+
+        free(actual);
+    }
+END_TEST
 
 START_TEST (test_rtoa__converts_M)
     {
@@ -356,6 +367,16 @@ START_TEST (test_rtoa__converts_LV)
         free(actual);
     }
 END_TEST
+START_TEST (test_rtoa__ignores_null)
+    {
+
+        char *actual = rtoa(NULL);
+
+        ck_assert_null(actual);
+
+        free(actual);
+    }
+END_TEST
 
 Suite *test_convert_suite(void) {
     Suite *suite = suite_create("Convert");
@@ -372,6 +393,7 @@ Suite *test_convert_suite(void) {
     tcase_add_test(tc_core, test_ator__converts_string_N_to_romain_numeral_nulla);
     tcase_add_test(tc_core, test_ator__protects_against_buffer_overflow);
     tcase_add_test(tc_core, test_ator__converting_invalid_character_fails);
+    tcase_add_test(tc_core, test_ator__ignores_null);
 
     tcase_add_test(tc_core, test_rtoa__converts_M);
     tcase_add_test(tc_core, test_rtoa__converts_MM);
@@ -384,6 +406,7 @@ Suite *test_convert_suite(void) {
     tcase_add_test(tc_core, test_rtoa__converts_CDXLIV);
     tcase_add_test(tc_core, test_rtoa__converts_CXI);
     tcase_add_test(tc_core, test_rtoa__converts_LV);
+    tcase_add_test(tc_core, test_rtoa__ignores_null);
     suite_add_tcase(suite, tc_core);
 
     return suite;

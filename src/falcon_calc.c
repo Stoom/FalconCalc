@@ -44,6 +44,10 @@ int parse_numeral_lookahead(char, char, roman *);
 void shift_numeral(roman *);
 
 roman *ator(char *str) {
+    if (str == NULL) {
+        return NULL;
+    }
+
     roman *r = calloc(1, sizeof(roman));
 
     size_t length = strnlen(str, MAX_NUMERAL_LENGTH);
@@ -63,6 +67,10 @@ roman *ator(char *str) {
 }
 
 char *rtoa(roman *numeral) {
+    if (numeral == NULL) {
+        return NULL;
+    }
+
     char *reduced = calloc(MAX_NUMERAL_LENGTH, sizeof(char));
     roman_convert _numeral;
     _numeral.original = *numeral;

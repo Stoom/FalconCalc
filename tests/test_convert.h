@@ -282,6 +282,20 @@ START_TEST (test_rtoa__converts_CM)
         free(actual);
     }
 END_TEST
+START_TEST (test_rtoa__converts_MMMMCMXCIX)
+    {
+        roman *r = ator("MMMMCMXCIX");
+        char expected[] = "MMMMCMXCIX";
+
+        char *actual = rtoa(r);
+
+        ck_assert_not_null(actual);
+        ck_assert_str_eq(expected, actual);
+
+        free(r);
+        free(actual);
+    }
+END_TEST
 
 Suite *test_convert_suite(void) {
     Suite *suite = suite_create("Convert");
@@ -305,6 +319,7 @@ Suite *test_convert_suite(void) {
     tcase_add_test(tc_core, test_rtoa__converts_CC);
     tcase_add_test(tc_core, test_rtoa__converts_CD);
     tcase_add_test(tc_core, test_rtoa__converts_CM);
+    tcase_add_test(tc_core, test_rtoa__converts_MMMMCMXCIX);
     suite_add_tcase(suite, tc_core);
 
     return suite;

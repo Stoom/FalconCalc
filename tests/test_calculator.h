@@ -96,6 +96,20 @@ START_TEST (test_add__M_and_M)
         free_romans(left, right, expected, actual);
     }
 END_TEST
+START_TEST (test_add__MMMM_and_M_overflows)
+    {
+        roman *left = ator("MMMM");
+        roman *right = ator("M");
+
+        roman *expected = ator("N");
+        roman *actual;
+
+        actual = add(left, right);
+
+        ck_assert_roman_eq(expected, actual);
+        free_romans(left, right, expected, actual);
+    }
+END_TEST
 START_TEST (test_add__ignores_left_null)
     {
         roman *right = ator("II");
@@ -264,6 +278,7 @@ Suite *test_calculator_suite(void) {
     tcase_add_test(tc_core, test_add__IV_and_II);
     tcase_add_test(tc_core, test_add__CMXCIX_and_I);
     tcase_add_test(tc_core, test_add__M_and_M);
+    tcase_add_test(tc_core, test_add__MMMM_and_M_overflows);
     tcase_add_test(tc_core, test_add__ignores_left_null);
     tcase_add_test(tc_core, test_add__ignores_right_null);
 

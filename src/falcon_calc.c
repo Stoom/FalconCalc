@@ -113,6 +113,10 @@ void reduce_plus(char *str, char *numeral, unsigned int *n, unsigned int n_mask,
 }
 
 roman *add(roman *left, roman *right) {
+    if (left == NULL || right == NULL) {
+        return NULL;
+    }
+
     roman_convert _right;
     roman_convert *sum = malloc(sizeof(roman_convert));
     unsigned int sum_l, sum_r, carry;
@@ -155,6 +159,10 @@ void shift_add(unsigned int *x, unsigned int *y, unsigned int *c, unsigned int c
 }
 
 roman *subtract(roman *left, roman *right) {
+    if (left == NULL || right == NULL) {
+        return NULL;
+    }
+
     roman_convert _left, _right;
     roman_convert *diff = malloc(sizeof(roman_convert));
     roman_convert diff_l, diff_r;

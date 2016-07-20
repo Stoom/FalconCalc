@@ -96,6 +96,34 @@ START_TEST (test_add__M_and_M)
         free_romans(left, right, expected, actual);
     }
 END_TEST
+START_TEST (test_add__ignores_left_null)
+    {
+        roman *right = ator("II");
+
+        roman *actual;
+
+        actual = add(NULL, right);
+
+        ck_assert_null(actual);
+
+        free(right);
+        free(actual);
+    }
+END_TEST
+START_TEST (test_add__ignores_right_null)
+    {
+        roman *left = ator("II");
+
+        roman *actual;
+
+        actual = add(left, NULL);
+
+        ck_assert_null(actual);
+
+        free(left);
+        free(actual);
+    }
+END_TEST
 
 START_TEST (test_subtract__I_from_I_numerals)
     {
@@ -197,6 +225,34 @@ START_TEST (test_subtract__larger_from_smaller_fails)
         free(actual);
     }
 END_TEST
+START_TEST (test_subtract__ignores_left_null)
+    {
+        roman *right = ator("II");
+
+        roman *actual;
+
+        actual = subtract(NULL, right);
+
+        ck_assert_null(actual);
+
+        free(right);
+        free(actual);
+    }
+END_TEST
+START_TEST (test_subtract__ignores_right_null)
+    {
+        roman *left = ator("II");
+
+        roman *actual;
+
+        actual = subtract(left, NULL);
+
+        ck_assert_null(actual);
+
+        free(left);
+        free(actual);
+    }
+END_TEST
 
 Suite *test_calculator_suite(void) {
     Suite *suite = suite_create("Calculator");
@@ -208,6 +264,8 @@ Suite *test_calculator_suite(void) {
     tcase_add_test(tc_core, test_add__IV_and_II);
     tcase_add_test(tc_core, test_add__CMXCIX_and_I);
     tcase_add_test(tc_core, test_add__M_and_M);
+    tcase_add_test(tc_core, test_add__ignores_left_null);
+    tcase_add_test(tc_core, test_add__ignores_right_null);
 
     tcase_add_test(tc_core, test_subtract__I_from_I_numerals);
     tcase_add_test(tc_core, test_subtract__I_from_II_numerals);
@@ -216,6 +274,8 @@ Suite *test_calculator_suite(void) {
     tcase_add_test(tc_core, test_subtract__borrows_for_I_from_X);
     tcase_add_test(tc_core, test_subtract__borrows_for_CXXI_from_MCXII);
     tcase_add_test(tc_core, test_subtract__larger_from_smaller_fails);
+    tcase_add_test(tc_core, test_subtract__ignores_left_null);
+    tcase_add_test(tc_core, test_subtract__ignores_right_null);
     suite_add_tcase(suite, tc_core);
 
     return suite;

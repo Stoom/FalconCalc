@@ -28,3 +28,22 @@ build:
           code: |
               cd $WERCKER_SOURCE_DIR
               tests/TestFalconCalc
+
+coverage:
+  steps:
+    - install-packages:
+        packages: check lcov
+
+    - script:
+        name: pip install
+        code: |
+            pip install cpp-coveralls
+
+    - script:
+        name: coverage
+        code: |
+            cd $WERCKER_SOURCE_DIR
+            git checkout $CI_BRANCH
+            cmake -DCMAKE_BUILD_TYPE=Debug
+            make FalconCalc_cov
+            CI_BRANCH=${WERCKER_GIT_BRANCH} coveralls -e lib -e tests -e CMakeFiles -e main.c -E .*.h --gcov-options '\-lp'

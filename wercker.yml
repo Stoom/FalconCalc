@@ -46,4 +46,4 @@ coverage:
             git checkout $CI_BRANCH
             cmake -DCMAKE_BUILD_TYPE=Debug
             make FalconCalc_cov
-            CI_BRANCH=${WERCKER_GIT_BRANCH} coveralls -e lib -e tests -e CMakeFiles -e main.c -E .*.h --gcov-options '\-lp'
+            coveralls -e lib -e tests -e CMakeFiles -e main.c -E .*.h --gcov-options '\-lp'

@@ -2,12 +2,12 @@
 Roman Numeral Calculator
 
 #### Master
-[![wercker status](https://app.wercker.com/status/e6633599c0919117eb4c008694be4587/s/master "wercker status")](https://app.wercker.com/project/bykey/e6633599c0919117eb4c008694be4587)
-[![Coverage Status](https://coveralls.io/repos/github/StummeJ/FalconCalc/badge.svg?branch=master&t=VzoO69)](https://coveralls.io/github/StummeJ/FalconCalc?branch=master)
+[![wercker status](https://app.wercker.com/status/96f106f534fd8b0ba05d12b70bf19b95/s/master "wercker status")](https://app.wercker.com/project/bykey/96f106f534fd8b0ba05d12b70bf19b95)  
+[![Coverage Status](https://coveralls.io/repos/github/StummeJ/FalconCalc/badge.svg?branch=master)](https://coveralls.io/github/StummeJ/FalconCalc?branch=master)
 
 #### Develop
-[![wercker status](https://app.wercker.com/status/e6633599c0919117eb4c008694be4587/s/develop "wercker status")](https://app.wercker.com/project/bykey/e6633599c0919117eb4c008694be4587)
-[![Coverage Status](https://coveralls.io/repos/github/StummeJ/FalconCalc/badge.svg?branch=develop&t=VzoO69)](https://coveralls.io/github/StummeJ/FalconCalc?branch=develop)
+[![wercker status](https://app.wercker.com/status/96f106f534fd8b0ba05d12b70bf19b95/s/develop "wercker status")](https://app.wercker.com/project/bykey/96f106f534fd8b0ba05d12b70bf19b95)  
+[![Coverage Status](https://coveralls.io/repos/github/StummeJ/FalconCalc/badge.svg?branch=develop)](https://coveralls.io/github/StummeJ/FalconCalc?branch=develop)
 
 ###Building and Running:
 #####Install needed debian packages:

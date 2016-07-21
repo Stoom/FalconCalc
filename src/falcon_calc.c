@@ -187,22 +187,21 @@ roman *subtract(roman *left, roman *right) {
         return NULL;
     }
 
-    roman_convert _left, _right;
     roman_convert *diff = malloc(sizeof(roman_convert));
     roman_convert diff_l, diff_r;
 
-    _left.original = *left;
-    _right.original = *right;
+    diff_l.original = *left;
+    diff_r.original = *right;
     diff->merged = 0;
 
-    if (_right.merged > _left.merged) {
+    if (diff_r.merged > diff_l.merged) {
         free(diff);
         return NULL;
     }
 
-    diff->merged = _left.merged ^ _right.merged;
-    diff_l.merged = _left.merged & diff->merged;
-    diff_r.merged = _right.merged & diff->merged;
+    diff->merged = diff_l.merged ^ diff_r.merged;
+    diff_l.merged = diff_l.merged & diff->merged;
+    diff_r.merged = diff_r.merged & diff->merged;
 
     shift_numeral(&diff->original);
     shift_numeral(&diff_l.original);

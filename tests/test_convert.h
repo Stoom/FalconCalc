@@ -212,6 +212,18 @@ START_TEST (test_ator__ignores_null)
         free(actual);
     }
 END_TEST
+START_TEST (test_ator__detects_too_many_Is)
+    {
+        char str[] = "IIIII";
+        roman *actual;
+
+        actual = ator(str);
+
+        ck_assert_null(actual);
+
+        free(actual);
+    }
+END_TEST
 
 START_TEST (test_rtoa__converts_M)
     {
@@ -394,6 +406,7 @@ Suite *test_convert_suite(void) {
     tcase_add_test(tc_core, test_ator__protects_against_buffer_overflow);
     tcase_add_test(tc_core, test_ator__converting_invalid_character_fails);
     tcase_add_test(tc_core, test_ator__ignores_null);
+    tcase_add_test(tc_core, test_ator__detects_too_many_Is);
 
     tcase_add_test(tc_core, test_rtoa__converts_M);
     tcase_add_test(tc_core, test_rtoa__converts_MM);

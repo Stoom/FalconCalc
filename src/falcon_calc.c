@@ -12,8 +12,26 @@
 
 #define MAX_NUMERAL_LENGTH 19
 
+typedef struct {
+    unsigned int IV: 4;
+    unsigned int _1: 1;
+    unsigned int XL: 4;
+    unsigned int _2: 1;
+    unsigned int CD: 4;
+    unsigned int _3: 1;
+} roman_fours;
+
+typedef struct {
+    unsigned int IX: 5;
+    unsigned int XC: 5;
+    unsigned int CM: 5;
+    unsigned int _: 4;
+} roman_nines;
+
 typedef union {
     roman original;
+    roman_fours fours;
+    roman_nines nines;
     unsigned int merged;
 } roman_convert;
 
@@ -41,14 +59,16 @@ void shift_add(unsigned int *, unsigned int *, unsigned int *, unsigned int, uns
 unsigned int borrow(int, roman_convert *, roman_convert *);
 void shift_numeral(roman *);
 int parse_numeral(char, roman *);
-int parse_numeral_lookahead(char, char, roman *);
+int parse_numeral_lookahead(char, char, roman_convert *);
+int check_overflow(unsigned int, bool);
+
 
 roman *ator(char *str) {
     if (str == NULL) {
         return NULL;
     }
 
-    roman *r = calloc(1, sizeof(roman));
+    roman_convert *r = calloc(1, sizeof(roman_convert));
 
     size_t length = strnlen(str, MAX_NUMERAL_LENGTH);
     for (int i = 0; i < length; i++) {
@@ -63,7 +83,7 @@ roman *ator(char *str) {
         i += ii;
     }
 
-    return r;
+    return &r->original;
 }
 
 char *rtoa(roman *numeral) {
@@ -230,56 +250,55 @@ void shift_numeral(roman *r) {
     }
 }
 
-int parse_numeral_lookahead(char numeral, char lookahead, roman *r) {
+int parse_numeral_lookahead(char numeral, char lookahead, roman_convert *r) {
     if (numeral == 'I' && lookahead == 'V') {
-        r->I = 0b1111;
+        r->fours.IV = 0b1111;
     }
     else if (numeral == 'I' && lookahead == 'X') {
-        r->I = 0b1111;
-        r->V = 0b1;
+        r->nines.IX = 0b11111;
     }
     else if (numeral == 'X' && lookahead == 'L') {
-        r->X = 0b1111;
+        r->fours.XL = 0b1111;
     }
     else if (numeral == 'X' && lookahead == 'C') {
-        r->X = 0b1111;
-        r->L = 0b1;
+        r->nines.XC = 0b11111;
     }
     else if (numeral == 'C' && lookahead == 'D') {
-        r->C = 0b1111;
+        r->fours.CD = 0b1111;
     }
     else if (numeral == 'C' && lookahead == 'M') {
-        r->C = 0b1111;
-        r->D = 0b1;
+        r->nines.CM = 0b11111;
     }
     else {
-        return parse_numeral(numeral, r);
+        return parse_numeral(numeral, &r->original);
     }
     return 1;
 }
 
 int parse_numeral(char numeral, roman *r) {
+    int ret = 0;
     switch (numeral) {
         case 'I':
+            ret = check_overflow(r->I, false);
             r->I <<= 1;
             r->I |= 1;
             break;
         case 'V':
-            r->V++;
+            r->V |= 1;
             break;
         case 'X':
             r->X <<= 1;
             r->X |= 1;
             break;
         case 'L':
-            r->L++;
+            r->L |= 1;
             break;
         case 'C':
             r->C <<= 1;
             r->C |= 1;
             break;
         case 'D':
-            r->D++;
+            r->D |= 1;
             break;
         case 'M':
             r->M <<= 1;
@@ -289,8 +308,15 @@ int parse_numeral(char numeral, roman *r) {
             memset(r, 0, sizeof(roman));
             break;
         default:
-            return -1;
+            ret = -1;
+    }
+    return ret;
+}
+
+int check_overflow(unsigned int numeral, bool single) {
+    unsigned int max = (single) ? 0b1 : 0b1111;
+    if (numeral == max) {
+        return -1;
     }
     return 0;
 }
-

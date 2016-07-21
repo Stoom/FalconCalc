@@ -39,9 +39,9 @@ int mask_reduced_len = 13;
 void reduce_plus(char *, char *, unsigned int *, unsigned int, unsigned int, bool);
 void shift_add(unsigned int *, unsigned int *, unsigned int *, unsigned int, unsigned int);
 unsigned int borrow(int, roman_convert *, roman_convert *);
+void shift_numeral(roman *);
 int parse_numeral(char, roman *);
 int parse_numeral_lookahead(char, char, roman *);
-void shift_numeral(roman *);
 
 roman *ator(char *str) {
     if (str == NULL) {
@@ -214,6 +214,21 @@ unsigned int borrow(int current, roman_convert *left, roman_convert *right) {
     }
 }
 
+void shift_numeral(roman *r) {
+    while (r->M > 0 && (r->M & 0x1) != 1) {
+        r->M >>= 1;
+    }
+    while (r->C > 0 && (r->C & 0x1) != 1) {
+        r->C >>= 1;
+    }
+    while (r->X > 0 && (r->X & 0x1) != 1) {
+        r->X >>= 1;
+    }
+    while (r->I > 0 && (r->I & 0x1) != 1) {
+        r->I >>= 1;
+    }
+}
+
 int parse_numeral_lookahead(char numeral, char lookahead, roman *r) {
     if (numeral == 'I' && lookahead == 'V') {
         r->I = 0b1111;
@@ -276,20 +291,5 @@ int parse_numeral(char numeral, roman *r) {
             return -1;
     }
     return 0;
-}
-
-void shift_numeral(roman *r) {
-    while (r->M > 0 && (r->M & 0x1) != 1) {
-        r->M >>= 1;
-    }
-    while (r->C > 0 && (r->C & 0x1) != 1) {
-        r->C >>= 1;
-    }
-    while (r->X > 0 && (r->X & 0x1) != 1) {
-        r->X >>= 1;
-    }
-    while (r->I > 0 && (r->I & 0x1) != 1) {
-        r->I >>= 1;
-    }
 }
 

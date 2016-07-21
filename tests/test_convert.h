@@ -224,6 +224,186 @@ START_TEST (test_ator__detects_too_many_Is)
         free(actual);
     }
 END_TEST
+START_TEST (test_ator__detects_too_many_Vs)
+    {
+        char str[] = "VV";
+        roman *actual;
+
+        actual = ator(str);
+
+        ck_assert_null(actual);
+
+        free(actual);
+    }
+END_TEST
+START_TEST (test_ator__detects_too_many_Xs)
+    {
+        char str[] = "XXXXX";
+        roman *actual;
+
+        actual = ator(str);
+
+        ck_assert_null(actual);
+
+        free(actual);
+    }
+END_TEST
+START_TEST (test_ator__detects_too_many_Ls)
+    {
+        char str[] = "LL";
+        roman *actual;
+
+        actual = ator(str);
+
+        ck_assert_null(actual);
+
+        free(actual);
+    }
+END_TEST
+START_TEST (test_ator__detects_too_many_Cs)
+    {
+        char str[] = "CCCCC";
+        roman *actual;
+
+        actual = ator(str);
+
+        ck_assert_null(actual);
+
+        free(actual);
+    }
+END_TEST
+START_TEST (test_ator__detects_too_many_Ds)
+    {
+        char str[] = "DD";
+        roman *actual;
+
+        actual = ator(str);
+
+        ck_assert_null(actual);
+
+        free(actual);
+    }
+END_TEST
+START_TEST (test_ator__detects_too_many_Ms)
+    {
+        char str[] = "MMMMM";
+        roman *actual;
+
+        actual = ator(str);
+
+        ck_assert_null(actual);
+
+        free(actual);
+    }
+END_TEST
+START_TEST (test_ator__detects_IVI)
+    {
+        char str[] = "IVI";
+        roman *actual;
+
+        actual = ator(str);
+
+        ck_assert_null(actual);
+
+        free(actual);
+    }
+END_TEST
+START_TEST (test_ator__detects_IXV)
+    {
+        char str[] = "IXV";
+        roman *actual;
+
+        actual = ator(str);
+
+        ck_assert_null(actual);
+
+        free(actual);
+    }
+END_TEST
+START_TEST (test_ator__detects_IXI)
+    {
+        char str[] = "IXI";
+        roman *actual;
+
+        actual = ator(str);
+
+        ck_assert_null(actual);
+
+        free(actual);
+    }
+END_TEST
+START_TEST (test_ator__detects_XLX)
+    {
+        char str[] = "XLX";
+        roman *actual;
+
+        actual = ator(str);
+
+        ck_assert_null(actual);
+
+        free(actual);
+    }
+END_TEST
+START_TEST (test_ator__detects_XCL)
+    {
+        char str[] = "XCL";
+        roman *actual;
+
+        actual = ator(str);
+
+        ck_assert_null(actual);
+
+        free(actual);
+    }
+END_TEST
+START_TEST (test_ator__detects_XCX)
+    {
+        char str[] = "XCX";
+        roman *actual;
+
+        actual = ator(str);
+
+        ck_assert_null(actual);
+
+        free(actual);
+    }
+END_TEST
+START_TEST (test_ator__detects_CDC)
+    {
+        char str[] = "CDC";
+        roman *actual;
+
+        actual = ator(str);
+
+        ck_assert_null(actual);
+
+        free(actual);
+    }
+END_TEST
+START_TEST (test_ator__detects_CMD)
+    {
+        char str[] = "CMD";
+        roman *actual;
+
+        actual = ator(str);
+
+        ck_assert_null(actual);
+
+        free(actual);
+    }
+END_TEST
+START_TEST (test_ator__detects_CMC)
+    {
+        char str[] = "CMC";
+        roman *actual;
+
+        actual = ator(str);
+
+        ck_assert_null(actual);
+
+        free(actual);
+    }
+END_TEST
 
 START_TEST (test_rtoa__converts_M)
     {
@@ -407,6 +587,21 @@ Suite *test_convert_suite(void) {
     tcase_add_test(tc_core, test_ator__converting_invalid_character_fails);
     tcase_add_test(tc_core, test_ator__ignores_null);
     tcase_add_test(tc_core, test_ator__detects_too_many_Is);
+    tcase_add_test(tc_core, test_ator__detects_too_many_Vs);
+    tcase_add_test(tc_core, test_ator__detects_too_many_Xs);
+    tcase_add_test(tc_core, test_ator__detects_too_many_Ls);
+    tcase_add_test(tc_core, test_ator__detects_too_many_Cs);
+    tcase_add_test(tc_core, test_ator__detects_too_many_Ds);
+    tcase_add_test(tc_core, test_ator__detects_too_many_Ms);
+    tcase_add_test(tc_core, test_ator__detects_IVI);
+    tcase_add_test(tc_core, test_ator__detects_IXV);
+    tcase_add_test(tc_core, test_ator__detects_IXI);
+    tcase_add_test(tc_core, test_ator__detects_XLX);
+    tcase_add_test(tc_core, test_ator__detects_XCL);
+    tcase_add_test(tc_core, test_ator__detects_XCX);
+    tcase_add_test(tc_core, test_ator__detects_CDC);
+    tcase_add_test(tc_core, test_ator__detects_CMD);
+    tcase_add_test(tc_core, test_ator__detects_CMC);
 
     tcase_add_test(tc_core, test_rtoa__converts_M);
     tcase_add_test(tc_core, test_rtoa__converts_MM);

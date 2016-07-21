@@ -61,6 +61,7 @@ void shift_numeral(roman *);
 int parse_numeral(char, roman *);
 int parse_numeral_lookahead(char, char, roman_convert *);
 int check_overflow(unsigned int, bool);
+int check_overflow_look_ahead(unsigned int);
 
 
 roman *ator(char *str) {
@@ -251,28 +252,35 @@ void shift_numeral(roman *r) {
 }
 
 int parse_numeral_lookahead(char numeral, char lookahead, roman_convert *r) {
+    int ret = 1;
     if (numeral == 'I' && lookahead == 'V') {
+        ret = check_overflow_look_ahead(r->fours.IV);
         r->fours.IV = 0b1111;
     }
     else if (numeral == 'I' && lookahead == 'X') {
+        ret = check_overflow_look_ahead(r->nines.IX);
         r->nines.IX = 0b11111;
     }
     else if (numeral == 'X' && lookahead == 'L') {
+        ret = check_overflow_look_ahead(r->fours.XL);
         r->fours.XL = 0b1111;
     }
     else if (numeral == 'X' && lookahead == 'C') {
+        ret = check_overflow_look_ahead(r->nines.XC);
         r->nines.XC = 0b11111;
     }
     else if (numeral == 'C' && lookahead == 'D') {
+        ret = check_overflow_look_ahead(r->fours.CD);
         r->fours.CD = 0b1111;
     }
     else if (numeral == 'C' && lookahead == 'M') {
+        ret = check_overflow_look_ahead(r->nines.CM);
         r->nines.CM = 0b11111;
     }
     else {
-        return parse_numeral(numeral, &r->original);
+        ret = parse_numeral(numeral, &r->original);
     }
-    return 1;
+    return ret;
 }
 
 int parse_numeral(char numeral, roman *r) {
@@ -284,23 +292,29 @@ int parse_numeral(char numeral, roman *r) {
             r->I |= 1;
             break;
         case 'V':
+            ret = check_overflow(r->V, true);
             r->V |= 1;
             break;
         case 'X':
+            ret = check_overflow(r->X, false);
             r->X <<= 1;
             r->X |= 1;
             break;
         case 'L':
+            ret = check_overflow(r->L, true);
             r->L |= 1;
             break;
         case 'C':
+            ret = check_overflow(r->C, false);
             r->C <<= 1;
             r->C |= 1;
             break;
         case 'D':
+            ret = check_overflow(r->D, true);
             r->D |= 1;
             break;
         case 'M':
+            ret = check_overflow(r->M, false);
             r->M <<= 1;
             r->M |= 1;
             break;
@@ -319,4 +333,11 @@ int check_overflow(unsigned int numeral, bool single) {
         return -1;
     }
     return 0;
+}
+
+int check_overflow_look_ahead(unsigned int numeral) {
+    if (numeral > 0) {
+        return -1;
+    }
+    return 1;
 }

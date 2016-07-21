@@ -296,9 +296,9 @@ START_TEST (test_ator__detects_too_many_Ms)
         free(actual);
     }
 END_TEST
-START_TEST (test_ator__detects_IVI)
+START_TEST (test_ator__detects_IIV)
     {
-        char str[] = "IVI";
+        char str[] = "IIV";
         roman *actual;
 
         actual = ator(str);
@@ -308,9 +308,9 @@ START_TEST (test_ator__detects_IVI)
         free(actual);
     }
 END_TEST
-START_TEST (test_ator__detects_IXV)
+START_TEST (test_ator__detects_VIX)
     {
-        char str[] = "IXV";
+        char str[] = "VIX";
         roman *actual;
 
         actual = ator(str);
@@ -320,9 +320,9 @@ START_TEST (test_ator__detects_IXV)
         free(actual);
     }
 END_TEST
-START_TEST (test_ator__detects_IXI)
+START_TEST (test_ator__detects_IIX)
     {
-        char str[] = "IXI";
+        char str[] = "IIX";
         roman *actual;
 
         actual = ator(str);
@@ -332,9 +332,9 @@ START_TEST (test_ator__detects_IXI)
         free(actual);
     }
 END_TEST
-START_TEST (test_ator__detects_XLX)
+START_TEST (test_ator__detects_XXL)
     {
-        char str[] = "XLX";
+        char str[] = "XXL";
         roman *actual;
 
         actual = ator(str);
@@ -344,9 +344,9 @@ START_TEST (test_ator__detects_XLX)
         free(actual);
     }
 END_TEST
-START_TEST (test_ator__detects_XCL)
+START_TEST (test_ator__detects_LXC)
     {
-        char str[] = "XCL";
+        char str[] = "LXC";
         roman *actual;
 
         actual = ator(str);
@@ -356,9 +356,9 @@ START_TEST (test_ator__detects_XCL)
         free(actual);
     }
 END_TEST
-START_TEST (test_ator__detects_XCX)
+START_TEST (test_ator__detects_XXC)
     {
-        char str[] = "XCX";
+        char str[] = "XXC";
         roman *actual;
 
         actual = ator(str);
@@ -368,9 +368,9 @@ START_TEST (test_ator__detects_XCX)
         free(actual);
     }
 END_TEST
-START_TEST (test_ator__detects_CDC)
+START_TEST (test_ator__detects_CCD)
     {
-        char str[] = "CDC";
+        char str[] = "CCDC";
         roman *actual;
 
         actual = ator(str);
@@ -380,9 +380,9 @@ START_TEST (test_ator__detects_CDC)
         free(actual);
     }
 END_TEST
-START_TEST (test_ator__detects_CMD)
+START_TEST (test_ator__detects_DCM)
     {
-        char str[] = "CMD";
+        char str[] = "DCM";
         roman *actual;
 
         actual = ator(str);
@@ -392,9 +392,9 @@ START_TEST (test_ator__detects_CMD)
         free(actual);
     }
 END_TEST
-START_TEST (test_ator__detects_CMC)
+START_TEST (test_ator__detects_CCM)
     {
-        char str[] = "CMC";
+        char str[] = "CCM";
         roman *actual;
 
         actual = ator(str);
@@ -593,15 +593,15 @@ Suite *test_convert_suite(void) {
     tcase_add_test(tc_core, test_ator__detects_too_many_Cs);
     tcase_add_test(tc_core, test_ator__detects_too_many_Ds);
     tcase_add_test(tc_core, test_ator__detects_too_many_Ms);
-    tcase_add_test(tc_core, test_ator__detects_IVI);
-    tcase_add_test(tc_core, test_ator__detects_IXV);
-    tcase_add_test(tc_core, test_ator__detects_IXI);
-    tcase_add_test(tc_core, test_ator__detects_XLX);
-    tcase_add_test(tc_core, test_ator__detects_XCL);
-    tcase_add_test(tc_core, test_ator__detects_XCX);
-    tcase_add_test(tc_core, test_ator__detects_CDC);
-    tcase_add_test(tc_core, test_ator__detects_CMD);
-    tcase_add_test(tc_core, test_ator__detects_CMC);
+    tcase_add_test(tc_core, test_ator__detects_IIV);
+    tcase_add_test(tc_core, test_ator__detects_VIX);
+    tcase_add_test(tc_core, test_ator__detects_IIX);
+    tcase_add_test(tc_core, test_ator__detects_XXL);
+    tcase_add_test(tc_core, test_ator__detects_LXC);
+    tcase_add_test(tc_core, test_ator__detects_XXC);
+    tcase_add_test(tc_core, test_ator__detects_CCD);
+    tcase_add_test(tc_core, test_ator__detects_DCM);
+    tcase_add_test(tc_core, test_ator__detects_CCM);
 
     tcase_add_test(tc_core, test_rtoa__converts_M);
     tcase_add_test(tc_core, test_rtoa__converts_MM);

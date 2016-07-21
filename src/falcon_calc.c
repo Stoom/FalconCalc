@@ -77,8 +77,7 @@ roman *ator(char *str) {
 
         if (ii < 0) {
             free(r);
-            r = NULL;
-            break;
+            return NULL;
         }
 
         i += ii;

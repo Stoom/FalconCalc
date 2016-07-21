@@ -34,7 +34,11 @@
 #define ck_assert_roman_eq(X, Y) _ck_assert_roman(X, ==, Y)
 
 #define ck_assert_not_null(X) do { \
-  ck_assert_msg(X !=  0, "Assertion '%s' not null failed.", #X); \
+  ck_assert_msg(X !=  NULL, "Assertion '%s' not null failed.", #X); \
+} while (0)
+
+#define ck_assert_null(X) do { \
+  ck_assert_msg(X ==  NULL, "Assertion '%s' not null failed.", #X); \
 } while (0)
 
 void _itoa(int value, char *str) {

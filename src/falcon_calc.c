@@ -172,6 +172,7 @@ roman *subtract(roman *left, roman *right) {
     diff->merged = 0;
 
     if (_right.merged > _left.merged) {
+        free(diff);
         return NULL;
     }
 

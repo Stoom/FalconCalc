@@ -94,18 +94,21 @@ char *rtoa(roman *numeral) {
     char *reduced = calloc(MAX_NUMERAL_LENGTH, sizeof(char));
     roman_convert _numeral;
     _numeral.original = *numeral;
+    unsigned int nines_mask, fives_mask, fours_mask, ones_mask;
 
     for (int current = 0; current < mask_reduced_len; current = current + 4) {
         unsigned int current_mask = mask_reduced[current];
-        unsigned int nines_mask = 0x0;
-        unsigned int fives_mask = 0x0;
-        unsigned int fours_mask = 0x0;
-        unsigned int ones_mask = 0x0;
         if (current < mask_reduced_len - 4) {
             nines_mask = mask_reduced[current + 1];
             fives_mask = mask_reduced[current + 2];
             fours_mask = mask_reduced[current + 3];
             ones_mask = mask_reduced[current + 4];
+        }
+        else {
+            nines_mask = 0x0;
+            fives_mask = 0x0;
+            fours_mask = 0x0;
+            ones_mask = 0x0;
         }
 
         unsigned int current_numeral = _numeral.merged & current_mask;
@@ -139,7 +142,7 @@ roman *add(roman *left, roman *right) {
 
     roman_convert _right;
     roman_convert *sum = malloc(sizeof(roman_convert));
-    unsigned int sum_l, sum_r, carry;
+    unsigned int sum_l, sum_r, carry, current_mask, comp_mask;
     sum->original = *left;
     _right.original = *right;
     carry = 0;
@@ -147,10 +150,10 @@ roman *add(roman *left, roman *right) {
     for (int current = mask_len - 1; current >= 0; current--) {
         int next = current - 1;
 
-        unsigned int current_mask = mask_numerals[current];
-        unsigned int comp_mask = (current)
-                                 ? mask_numerals[next] | current_mask
-                                 : current_mask;
+        current_mask = mask_numerals[current];
+        comp_mask = (current)
+                    ? mask_numerals[next] | current_mask
+                    : current_mask;
 
         sum_l = sum->merged & current_mask;
         sum_r = _right.merged & current_mask;
@@ -165,8 +168,9 @@ roman *add(roman *left, roman *right) {
 }
 
 void shift_add(unsigned int *x, unsigned int *y, unsigned int *c, unsigned int cur_mask, unsigned int comp_mask) {
+    unsigned int before;
     while ((*y & cur_mask) > 0) {
-        unsigned int before = *x;
+        before = *x;
 
         *y &= (*y >> 1) & cur_mask;
         *x |= ((*x | ~comp_mask) << 1 | 1) & comp_mask;
@@ -204,9 +208,9 @@ roman *subtract(roman *left, roman *right) {
     shift_numeral(&diff_l.original);
     shift_numeral(&diff_r.original);
 
-    unsigned int mask = 0x0;
+    unsigned int mask = 0x0, current_mask;
     for (int current = mask_len - 1; current > 0; current--) {
-        unsigned int current_mask = mask_numerals[current];
+        current_mask = mask_numerals[current];
         if ((diff_r.merged & current_mask) > (diff_l.merged & current_mask)) {
             mask = borrow(current, &diff_l, &diff_r);
             diff_l.merged |= mask;

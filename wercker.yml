@@ -47,3 +47,4 @@ coverage:
             cmake -DCMAKE_BUILD_TYPE=Debug
             make FalconCalc_cov
             CI_BRANCH=${WERCKER_GIT_BRANCH} coveralls -e lib -e tests -e CMakeFiles -e main.c -E .*.h --gcov-options '\-lp'
+            bash <(curl -s https://codecov.io/bash)
